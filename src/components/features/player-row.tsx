@@ -1,5 +1,6 @@
 import type { InjuryStatus, Player } from '#/types/yahoo'
 import { Badge } from '#/components/ui/badge'
+import { cn } from '#/lib/utils'
 
 /** CEL is ineligible like Out — zero stats, locks the roster spot. */
 export function isScoringIneligible(status: InjuryStatus): boolean {
@@ -36,37 +37,38 @@ export function PlayerRow({
   const ineligible = isScoringIneligible(player.injuryStatus)
   return (
     <div
-      className={`grid grid-cols-[48px_1fr_auto] items-center gap-2 rounded-lg px-2 py-2 ${
-        highlighted
-          ? 'bg-[var(--accent-soft)]'
-          : ineligible
-            ? 'bg-red-950/30 opacity-80'
-            : 'hover:bg-[var(--panel-elevated)]'
-      }`}
+      className={cn(
+        'grid grid-cols-[2.75rem_minmax(0,1fr)_auto] items-center gap-2 rounded-lg px-2 py-2.5 sm:gap-3 sm:px-2.5',
+        highlighted && 'bg-[var(--accent-soft)]',
+        ineligible && !highlighted && 'bg-red-950/25 opacity-85',
+        !highlighted && !ineligible && 'hover:bg-[var(--panel-elevated)]',
+      )}
     >
-      <span className="text-xs font-semibold text-[var(--muted)]">
+      <span className="text-[10px] font-semibold uppercase tracking-wide text-[var(--muted)] sm:text-xs">
         {player.selectedPosition}
       </span>
       <div className="min-w-0">
-        <div className="flex flex-wrap items-center gap-2">
-          <p className="truncate text-sm font-medium">{player.name}</p>
+        <div className="flex flex-wrap items-center gap-1.5">
+          <p className="truncate text-sm font-medium sm:text-[15px]">
+            {player.name}
+          </p>
           <InjuryBadge status={player.injuryStatus} />
         </div>
-        <p className="text-xs text-[var(--muted)]">
+        <p className="truncate text-[11px] text-[var(--muted)] sm:text-xs">
           {player.nflTeam}
           {player.opponent ? ` · ${player.opponent}` : ''}
           {player.gameTime ? ` · ${player.gameTime}` : ''}
         </p>
       </div>
       <div className="text-right">
-        <p className="text-sm font-semibold tabular-nums">
+        <p className="text-sm font-semibold tabular-nums sm:text-base">
           {player.projectedPoints.toFixed(1)}
         </p>
         {onToggle ? (
           <button
             type="button"
             onClick={onToggle}
-            className="text-[10px] uppercase tracking-wide text-[var(--accent)]"
+            className="mt-0.5 min-h-8 px-1 text-[10px] uppercase tracking-wide text-[var(--accent)]"
           >
             sim
           </button>
