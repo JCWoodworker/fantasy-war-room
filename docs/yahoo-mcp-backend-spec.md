@@ -57,7 +57,8 @@ git push herokupp preprod:main
 git push herokuprod main:main
 
 # Smoke:
-curl https://nestjs-mega-backend-preprod.herokuapp.com/api/v1/subapps/fantasy-war-room/health
+curl https://nestjs-mega-backend-preprod-420ae4c0c109.herokuapp.com/api/v1/subapps/fantasy-war-room/health
+curl https://nestjs-mega-backend-prod-893a099fba68.herokuapp.com/api/v1/subapps/fantasy-war-room/health
 ```
 
 ### One-time Yahoo OAuth
