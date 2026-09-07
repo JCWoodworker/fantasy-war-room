@@ -28,11 +28,9 @@ export function InjuryBadge({ status }: { status: InjuryStatus }) {
 export function PlayerRow({
   player,
   highlighted,
-  onToggle,
 }: {
   player: Player
   highlighted?: boolean
-  onToggle?: () => void
 }) {
   const ineligible = isScoringIneligible(player.injuryStatus)
   return (
@@ -64,15 +62,6 @@ export function PlayerRow({
         <p className="text-sm font-semibold tabular-nums sm:text-base">
           {player.projectedPoints.toFixed(1)}
         </p>
-        {onToggle ? (
-          <button
-            type="button"
-            onClick={onToggle}
-            className="mt-0.5 min-h-8 px-1 text-[10px] uppercase tracking-wide text-[var(--accent)]"
-          >
-            sim
-          </button>
-        ) : null}
       </div>
     </div>
   )
