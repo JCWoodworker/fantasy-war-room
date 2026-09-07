@@ -14,37 +14,49 @@ import {
   useMatchupQuery,
   useStandingsQuery,
 } from '#/hooks/use-fantasy-queries'
-
-const tiles = [
-  {
-    to: '/matchup',
-    title: 'Matchup Exploiter',
-    blurb: 'Week 1 vs Marianne — Nix/Harvey vs Broncos DEF.',
-    icon: Crosshair,
-  },
-  {
-    to: '/waivers',
-    title: 'Waiver Radar',
-    blurb: 'Guerendo, Benson, Conklin blocks before Sunday.',
-    icon: Radar,
-  },
-  {
-    to: '/schedule',
-    title: 'Schedule Matrix',
-    blurb: 'Full Week 1 NFL slate with ownership tags.',
-    icon: CalendarRange,
-  },
-] as const
+import { getManagedTeam, useWarRoomStore } from '#/stores/war-room-store'
 
 export function DashboardHome() {
   const health = useHealthQuery()
   const matchup = useMatchupQuery()
   const standings = useStandingsQuery()
+  const activeTeamId = useWarRoomStore((s) => s.activeTeamId)
+  const activeTeam = getManagedTeam(activeTeamId)
 
   const edge =
     matchup.data != null
       ? matchup.data.myTeam.projectedTotal - matchup.data.opponent.projectedTotal
       : null
+
+  const oppName =
+    matchup.data?.opponent.managerName ?? matchup.data?.opponent.name ?? 'opponent'
+  const oppTeam = matchup.data?.opponent.name
+
+  const tiles = [
+    {
+      to: '/matchup' as const,
+      title: 'Matchup Exploiter',
+      blurb: matchup.data
+        ? `Week ${matchup.data.week} vs ${oppName} — projected edge live.`
+        : 'Load matchup leverage and lineup edges.',
+      icon: Crosshair,
+    },
+    {
+      to: '/waivers' as const,
+      title: 'Waiver Radar',
+      blurb:
+        activeTeamId === 'two_pint_conversion'
+          ? 'Flex Diggs vs Pittman and watch Nabers/Warren.'
+          : 'Block handcuffs and stash system backups.',
+      icon: Radar,
+    },
+    {
+      to: '/schedule' as const,
+      title: 'Schedule Matrix',
+      blurb: 'Full Week 1 NFL slate with ownership tags.',
+      icon: CalendarRange,
+    },
+  ]
 
   return (
     <div className="animate-fade-up space-y-5 sm:space-y-8">
@@ -53,13 +65,15 @@ export function DashboardHome() {
           {health.data?.leagueName ?? 'Fantasy Football League 2026'}
         </p>
         <h2 className="font-display mt-3 max-w-xl text-3xl leading-[0.95] text-[var(--fg)] sm:text-4xl lg:text-5xl">
-          <span className="text-[var(--accent)]">Grok Bowers</span>
+          <span className="text-[var(--accent)]">{activeTeam.teamName}</span>
           <span className="mt-1 block text-[var(--fg)]">
             Week {matchup.data?.week ?? 1}
           </span>
         </h2>
         <p className="mt-3 max-w-lg text-sm text-[var(--muted)] sm:mt-4 sm:text-base">
-          Corey vs Marianne — league mock until Yahoo API access clears.
+          {activeTeam.ownerName}
+          {oppTeam ? ` vs ${oppName}` : ''} — league mock until Yahoo API access
+          clears.
         </p>
         <div className="mt-5 flex flex-wrap gap-2">
           <Badge variant="secondary">Mode: {health.data?.mode ?? 'mock'}</Badge>
@@ -101,7 +115,7 @@ export function DashboardHome() {
             <div
               key={row.teamKey}
               className={`flex flex-col gap-1 rounded-lg border border-[var(--border)] px-3 py-2.5 text-sm sm:flex-row sm:items-center sm:justify-between ${
-                row.teamKey === 'grok_bowers' ? 'bg-[var(--accent-soft)]' : ''
+                row.teamKey === activeTeamId ? 'bg-[var(--accent-soft)]' : ''
               }`}
             >
               <div className="flex min-w-0 items-center gap-3">

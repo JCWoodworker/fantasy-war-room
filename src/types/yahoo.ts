@@ -175,12 +175,33 @@ export interface LeagueManager {
   isUser: boolean
 }
 
+export interface MatchupBundle {
+  week: number
+  userTeam: {
+    managerId: string
+    teamName: string
+    projectedTotal: number
+    actualTotal: number
+    starters: Player[]
+    bench: Player[]
+  }
+  opponentTeam: {
+    managerId: string
+    teamName: string
+    projectedTotal: number
+    actualTotal: number
+    starters: Player[]
+    bench: Player[]
+  }
+}
+
 export interface LeagueDump {
   league: {
     name: string
     totalTeams: number
     currentWeek: number
     userTeamId: string
+    managedTeamIds?: string[]
     managers: LeagueManager[]
   }
   standings: Array<{
@@ -193,28 +214,8 @@ export interface LeagueDump {
     projectedSeasonPoints: number
     projectedRecord: string
   }>
-  matchup: {
-    week: number
-    userTeam: {
-      managerId: string
-      teamName: string
-      projectedTotal: number
-      actualTotal: number
-      starters: Player[]
-      bench: Player[]
-    }
-    opponentTeam: {
-      managerId: string
-      teamName: string
-      projectedTotal: number
-      actualTotal: number
-      starters: Player[]
-      bench: Player[]
-    }
-  }
-  waivers: {
-    recommendedBlocks: WaiverBlock[]
-  }
-  byeLookahead: ByeLookahead
+  matchups: Record<string, MatchupBundle>
+  waiversByTeam: Record<string, { recommendedBlocks: WaiverBlock[] }>
+  byeLookaheadByTeam: Record<string, ByeLookahead>
   scheduleMatrix: ScheduleMatrix
 }

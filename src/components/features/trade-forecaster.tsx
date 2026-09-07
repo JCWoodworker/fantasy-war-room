@@ -8,7 +8,11 @@ import {
   CardHeader,
   CardTitle,
 } from '#/components/ui/card'
-import { useScheduleQuery } from '#/hooks/use-fantasy-queries'
+import {
+  useMatchupQuery,
+  useScheduleQuery,
+} from '#/hooks/use-fantasy-queries'
+import { useWarRoomStore } from '#/stores/war-room-store'
 import { cn } from '#/lib/utils'
 
 function formatKickoff(iso: string): string {
@@ -27,6 +31,9 @@ function formatKickoff(iso: string): string {
 
 export function TradeForecaster() {
   const { data, isLoading, error } = useScheduleQuery(3)
+  const matchup = useMatchupQuery()
+  const activeTeamId = useWarRoomStore((s) => s.activeTeamId)
+  const opponentTeamKey = matchup.data?.opponent.teamKey
 
   if (isLoading) {
     return <p className="text-[var(--muted)]">Building schedule matrix…</p>
@@ -103,8 +110,10 @@ export function TradeForecaster() {
             <CardContent>
               <div className="grid grid-cols-1 gap-2 sm:grid-cols-2 lg:grid-cols-3">
                 {game.fantasyRelevance.map((player) => {
-                  const isUser = player.managerId === 'grok_bowers'
-                  const isOpp = player.managerId === 'marianne_team'
+                  const isUser = player.managerId === activeTeamId
+                  const isOpp =
+                    opponentTeamKey != null &&
+                    player.managerId === opponentTeamKey
                   return (
                     <div
                       key={`${game.id}-${player.playerKey}`}

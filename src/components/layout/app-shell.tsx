@@ -9,9 +9,11 @@ import {
 } from 'lucide-react'
 import { useEffect, useState } from 'react'
 
+import { TeamSwitcher } from '#/components/layout/team-switcher'
 import { Badge } from '#/components/ui/badge'
 import { Button } from '#/components/ui/button'
 import { useHealthQuery } from '#/hooks/use-fantasy-queries'
+import { getManagedTeam, useWarRoomStore } from '#/stores/war-room-store'
 import { cn } from '#/lib/utils'
 
 const navItems = [
@@ -25,6 +27,8 @@ export function AppShell({ children }: { children: React.ReactNode }) {
   const [drawerOpen, setDrawerOpen] = useState(false)
   const pathname = useRouterState({ select: (s) => s.location.pathname })
   const health = useHealthQuery()
+  const activeTeamId = useWarRoomStore((s) => s.activeTeamId)
+  const activeTeam = getManagedTeam(activeTeamId)
 
   useEffect(() => {
     setDrawerOpen(false)
@@ -80,7 +84,13 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               )
             })}
           </nav>
-          <div className="mt-auto space-y-2 border-t border-[var(--border)] pt-4">
+          <div className="mt-auto space-y-3 border-t border-[var(--border)] pt-4">
+            <div>
+              <p className="mb-2 text-[10px] uppercase tracking-[0.18em] text-[var(--muted)]">
+                Viewing as
+              </p>
+              <TeamSwitcher />
+            </div>
             <div className="flex items-center justify-between text-xs text-[var(--muted)]">
               <span>Data mode</span>
               <Badge variant="secondary">{health.data?.mode ?? 'mock'}</Badge>
@@ -130,6 +140,12 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             )
           })}
         </nav>
+        <div className="border-t border-[var(--border)] p-3">
+          <p className="mb-2 text-[10px] uppercase tracking-[0.18em] text-[var(--muted)]">
+            Viewing as
+          </p>
+          <TeamSwitcher compact />
+        </div>
       </aside>
 
       {drawerOpen ? (
@@ -160,9 +176,12 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               <span className="text-[var(--accent)] lg:hidden">GB </span>
               <span className="lg:hidden">{pageTitle}</span>
               <span className="hidden text-[var(--muted)] lg:inline">
-                Ruthless leverage dashboard
+                {activeTeam.ownerName} · {activeTeam.teamName}
               </span>
             </p>
+          </div>
+          <div className="hidden min-w-0 md:block lg:hidden">
+            <TeamSwitcher />
           </div>
           <Badge
             variant={health.data?.mcpConnected ? 'positive' : 'secondary'}
@@ -171,6 +190,9 @@ export function AppShell({ children }: { children: React.ReactNode }) {
             {health.data?.mode ?? 'mock'}
           </Badge>
         </header>
+        <div className="border-b border-[var(--border)] bg-black px-3 py-2 md:hidden">
+          <TeamSwitcher compact />
+        </div>
 
         <main
           className={cn(

@@ -6,6 +6,7 @@ import {
   mockStandings,
   mockWaivers,
 } from '#/data/league-mock'
+import type { ManagedTeamId } from '#/stores/war-room-store'
 import type {
   HealthResponse,
   MatchupResponse,
@@ -36,38 +37,43 @@ export async function getHealth(): Promise<HealthResponse> {
   return fetchJson<HealthResponse>('/health')
 }
 
-export async function getMatchup(week?: number): Promise<MatchupResponse> {
+export async function getMatchup(
+  teamId: ManagedTeamId,
+  week?: number,
+): Promise<MatchupResponse> {
   if (useMockYahoo()) {
-    const data = await mockMatchup()
+    const data = await mockMatchup(teamId)
     if (week) data.week = week
     return data
   }
-  const query = week ? `?week=${week}` : ''
-  return fetchJson<MatchupResponse>(`/matchup${query}`)
+  const params = new URLSearchParams({ teamId })
+  if (week) params.set('week', String(week))
+  return fetchJson<MatchupResponse>(`/matchup?${params}`)
 }
 
 export async function getRoster(
-  teamKey?: string,
+  teamId: ManagedTeamId,
   week?: number,
 ): Promise<RosterResponse> {
   if (useMockYahoo()) {
-    const data = await mockRoster()
+    const data = await mockRoster(teamId)
     if (week) data.week = week
     return data
   }
-  const params = new URLSearchParams()
-  if (teamKey) params.set('teamKey', teamKey)
+  const params = new URLSearchParams({ teamId })
   if (week) params.set('week', String(week))
-  const query = params.toString() ? `?${params}` : ''
-  return fetchJson<RosterResponse>(`/roster${query}`)
+  return fetchJson<RosterResponse>(`/roster?${params}`)
 }
 
-export async function getWaivers(options?: {
-  position?: string
-  systems?: string[]
-}): Promise<WaiversResponse> {
+export async function getWaivers(
+  teamId: ManagedTeamId,
+  options?: {
+    position?: string
+    systems?: string[]
+  },
+): Promise<WaiversResponse> {
   if (useMockYahoo()) {
-    const data = await mockWaivers()
+    const data = await mockWaivers(teamId)
     if (options?.systems?.length) {
       const set = new Set(options.systems)
       return {
@@ -80,16 +86,20 @@ export async function getWaivers(options?: {
     }
     return data
   }
-  const params = new URLSearchParams()
+  const params = new URLSearchParams({ teamId })
   if (options?.position) params.set('position', options.position)
   if (options?.systems?.length) params.set('systems', options.systems.join(','))
-  const query = params.toString() ? `?${params}` : ''
-  return fetchJson<WaiversResponse>(`/waivers${query}`)
+  return fetchJson<WaiversResponse>(`/waivers?${params}`)
 }
 
-export async function getSchedule(weeksAhead = 3): Promise<ScheduleResponse> {
-  if (useMockYahoo()) return mockSchedule()
-  return fetchJson<ScheduleResponse>(`/schedule?weeksAhead=${weeksAhead}`)
+export async function getSchedule(
+  teamId: ManagedTeamId,
+  weeksAhead = 3,
+): Promise<ScheduleResponse> {
+  if (useMockYahoo()) return mockSchedule(teamId)
+  return fetchJson<ScheduleResponse>(
+    `/schedule?teamId=${teamId}&weeksAhead=${weeksAhead}`,
+  )
 }
 
 export async function getStandings(): Promise<StandingsResponse> {

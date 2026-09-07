@@ -8,6 +8,7 @@ import {
   getStandings,
   getWaivers,
 } from '#/lib/api'
+import { useWarRoomStore } from '#/stores/war-room-store'
 
 export function useHealthQuery() {
   return useQuery({
@@ -18,32 +19,41 @@ export function useHealthQuery() {
 }
 
 export function useMatchupQuery(week?: number) {
+  const teamId = useWarRoomStore((s) => s.activeTeamId)
   return useQuery({
-    queryKey: ['matchup', week ?? 'current'],
-    queryFn: () => getMatchup(week),
+    queryKey: ['matchup', teamId, week ?? 'current'],
+    queryFn: () => getMatchup(teamId, week),
     refetchInterval: 60_000,
   })
 }
 
-export function useRosterQuery(teamKey?: string, week?: number) {
+export function useRosterQuery(week?: number) {
+  const teamId = useWarRoomStore((s) => s.activeTeamId)
   return useQuery({
-    queryKey: ['roster', teamKey ?? 'me', week ?? 'current'],
-    queryFn: () => getRoster(teamKey, week),
+    queryKey: ['roster', teamId, week ?? 'current'],
+    queryFn: () => getRoster(teamId, week),
   })
 }
 
 export function useWaiversQuery(position?: string, systems?: string[]) {
+  const teamId = useWarRoomStore((s) => s.activeTeamId)
   return useQuery({
-    queryKey: ['waivers', position ?? 'all', systems?.join(',') ?? 'all'],
-    queryFn: () => getWaivers({ position, systems }),
+    queryKey: [
+      'waivers',
+      teamId,
+      position ?? 'all',
+      systems?.join(',') ?? 'all',
+    ],
+    queryFn: () => getWaivers(teamId, { position, systems }),
     refetchInterval: 120_000,
   })
 }
 
 export function useScheduleQuery(weeksAhead = 3) {
+  const teamId = useWarRoomStore((s) => s.activeTeamId)
   return useQuery({
-    queryKey: ['schedule', weeksAhead],
-    queryFn: () => getSchedule(weeksAhead),
+    queryKey: ['schedule', teamId, weeksAhead],
+    queryFn: () => getSchedule(teamId, weeksAhead),
   })
 }
 

@@ -1,8 +1,10 @@
 import leagueDump from '#/data/mock-league-week1.json'
+import type { ManagedTeamId } from '#/stores/war-room-store'
 import type {
   HandcuffSuggestion,
   LeverageFlag,
   LeagueDump,
+  MatchupBundle,
   MatchupResponse,
   Player,
   PositionalDifferential,
@@ -30,6 +32,14 @@ function teamName(managerId: string): string {
     dump.league.managers.find((m) => m.managerId === managerId)?.teamName ??
     managerId
   )
+}
+
+function getMatchupBundle(teamId: ManagedTeamId): MatchupBundle {
+  const bundle = dump.matchups[teamId]
+  if (!bundle) {
+    throw new Error(`No matchup mock for team ${teamId}`)
+  }
+  return bundle
 }
 
 function sumProjected(players: Player[]): number {
@@ -62,12 +72,12 @@ function positionalDifferentials(
     .filter((row): row is PositionalDifferential => row !== null)
 }
 
-function leverageFromMatchupAndMatrix(): LeverageFlag[] {
+function leverageForTeam(teamId: ManagedTeamId): LeverageFlag[] {
+  const matchup = getMatchupBundle(teamId)
   const flags: LeverageFlag[] = []
 
-  // Classic negative correlation: my QB vs their DEF same NFL team
-  for (const qb of dump.matchup.userTeam.starters.filter((p) => p.position === 'QB')) {
-    for (const def of dump.matchup.opponentTeam.starters.filter(
+  for (const qb of matchup.userTeam.starters.filter((p) => p.position === 'QB')) {
+    for (const def of matchup.opponentTeam.starters.filter(
       (p) => p.position === 'DEF',
     )) {
       if (qb.nflTeam && def.nflTeam && qb.nflTeam === def.nflTeam) {
@@ -82,13 +92,43 @@ function leverageFromMatchupAndMatrix(): LeverageFlag[] {
     }
   }
 
+  // Amanda: Dak vs opponent Cowboys stack pieces
+  if (teamId === 'two_pint_conversion') {
+    const dak = matchup.userTeam.starters.find((p) => p.playerKey === 'dak-prescott')
+    const lamb = matchup.opponentTeam.starters.find(
+      (p) => p.playerKey === 'ceedee-lamb',
+    )
+    if (dak && lamb) {
+      flags.push({
+        type: 'SNF_STACK_CORRELATION',
+        severity: 'high',
+        message:
+          'Dak Prescott faces Ham N Eggers’ CeeDee/Aubrey/Nabers exposure. Non-Lamb Dak production surges you while capping B-Nice.',
+        myPlayerKey: dak.playerKey,
+        relatedPlayerKey: lamb.playerKey,
+      })
+    }
+    const waddle = matchup.userTeam.starters.find(
+      (p) => p.playerKey === 'jaylen-waddle',
+    )
+    const rice = matchup.userTeam.starters.find((p) => p.playerKey === 'rashee-rice')
+    if (waddle && rice) {
+      flags.push({
+        type: 'MNF_PASS_CATCHER_STACK',
+        severity: 'medium',
+        message:
+          'You own Waddle + Rice (~27 combined) in the final game — late leverage to erase a Sunday deficit while Mahomes sits on B-Nice’s bench.',
+        myPlayerKey: waddle.playerKey,
+        relatedPlayerKey: rice.playerKey,
+      })
+    }
+  }
+
   for (const game of dump.scheduleMatrix.games) {
     if (!game.leverageFlag?.active) continue
-    const involvesUser = game.fantasyRelevance.some(
-      (p) => p.managerId === dump.league.userTeamId,
-    )
+    const involvesUser = game.fantasyRelevance.some((p) => p.managerId === teamId)
     const involvesOpp = game.fantasyRelevance.some(
-      (p) => p.managerId === dump.matchup.opponentTeam.managerId,
+      (p) => p.managerId === matchup.opponentTeam.managerId,
     )
     if (!involvesUser && !involvesOpp) continue
     flags.push({
@@ -99,17 +139,12 @@ function leverageFromMatchupAndMatrix(): LeverageFlag[] {
     })
   }
 
-  // Dedupe by message
   const seen = new Set<string>()
   return flags.filter((f) => {
     if (seen.has(f.message)) return false
     seen.add(f.message)
     return true
   })
-}
-
-export async function loadLeagueDump(): Promise<LeagueDump> {
-  return delay(dump)
 }
 
 export async function mockHealth() {
@@ -122,8 +157,10 @@ export async function mockHealth() {
   })
 }
 
-export async function mockMatchup(): Promise<MatchupResponse> {
-  const { userTeam, opponentTeam, week } = dump.matchup
+export async function mockMatchup(
+  teamId: ManagedTeamId,
+): Promise<MatchupResponse> {
+  const { userTeam, opponentTeam, week } = getMatchupBundle(teamId)
   return delay({
     week,
     myTeam: {
@@ -148,12 +185,12 @@ export async function mockMatchup(): Promise<MatchupResponse> {
       userTeam.starters,
       opponentTeam.starters,
     ),
-    leverageFlags: leverageFromMatchupAndMatrix(),
+    leverageFlags: leverageForTeam(teamId),
   })
 }
 
-export async function mockRoster(): Promise<RosterResponse> {
-  const { userTeam, week } = dump.matchup
+export async function mockRoster(teamId: ManagedTeamId): Promise<RosterResponse> {
+  const { userTeam, week } = getMatchupBundle(teamId)
   return delay({
     week,
     team: {
@@ -168,19 +205,27 @@ export async function mockRoster(): Promise<RosterResponse> {
   })
 }
 
-export async function mockWaivers(): Promise<WaiversResponse> {
-  const blocks = dump.waivers.recommendedBlocks
+export async function mockWaivers(
+  teamId: ManagedTeamId,
+): Promise<WaiversResponse> {
+  const blocks =
+    dump.waiversByTeam[teamId]?.recommendedBlocks ??
+    dump.waiversByTeam.grok_bowers?.recommendedBlocks ??
+    []
+
   const handcuffBlocks: HandcuffSuggestion[] = blocks.map((block) => ({
     injuredPlayer: {
-      playerKey: `injured-for-${block.playerKey}`,
+      playerKey: `context-${block.playerKey}`,
       name:
-        block.nflTeam === 'SF'
-          ? 'Christian McCaffrey'
-          : block.nflTeam === 'ARI'
-            ? 'Jeremiyah Love'
-            : block.nflTeam === 'GB'
-              ? 'Josh Jacobs'
-              : 'Opponent injury',
+        teamId === 'two_pint_conversion'
+          ? 'Ham N Eggers injury watch'
+          : block.nflTeam === 'SF'
+            ? 'Christian McCaffrey'
+            : block.nflTeam === 'ARI'
+              ? 'Jeremiyah Love'
+              : block.nflTeam === 'GB'
+                ? 'Josh Jacobs'
+                : 'Opponent injury',
       position: block.position,
       selectedPosition: block.position,
       nflTeam: block.nflTeam,
@@ -188,15 +233,11 @@ export async function mockWaivers(): Promise<WaiversResponse> {
       injuryStatus: block.nflTeam === 'GB' ? 'CEL' : 'Q',
     },
     injuredOnTeamKey:
-      block.nflTeam === 'SF' || block.nflTeam === 'ARI'
-        ? 'marianne_team'
-        : block.nflTeam === 'NYJ'
-          ? 'latino_heat'
-          : 'latino_heat',
+      teamId === 'two_pint_conversion' ? 'ham_n_eggers' : 'marianne_team',
     injuredOnTeamName:
-      block.nflTeam === 'SF' || block.nflTeam === 'ARI'
-        ? teamName('marianne_team')
-        : teamName('latino_heat'),
+      teamId === 'two_pint_conversion'
+        ? teamName('ham_n_eggers')
+        : teamName('marianne_team'),
     backup: {
       playerKey: block.playerKey,
       name: block.targetPlayer,
@@ -227,22 +268,25 @@ export async function mockWaivers(): Promise<WaiversResponse> {
   })
 }
 
-export async function mockSchedule(): Promise<ScheduleResponse> {
-  const bye = dump.byeLookahead
-  const myPlayers = [
-    ...dump.matchup.userTeam.starters,
-    ...dump.matchup.userTeam.bench,
-  ].map((player) => ({
-    week: dump.scheduleMatrix.week,
-    playerKey: player.playerKey,
-    playerName: player.name,
-    position: player.position,
-    isBye: bye.affectedUserPlayers.some((p) => p.playerKey === player.playerKey),
-    opponent: player.opponent,
-    softSchedule: false,
-  }))
+export async function mockSchedule(
+  teamId: ManagedTeamId,
+): Promise<ScheduleResponse> {
+  const matchup = getMatchupBundle(teamId)
+  const bye =
+    dump.byeLookaheadByTeam[teamId] ?? dump.byeLookaheadByTeam.grok_bowers
 
-  // Also surface week 11 bye rows for affected players
+  const myPlayers = [...matchup.userTeam.starters, ...matchup.userTeam.bench].map(
+    (player) => ({
+      week: dump.scheduleMatrix.week,
+      playerKey: player.playerKey,
+      playerName: player.name,
+      position: player.position,
+      isBye: bye.affectedUserPlayers.some((p) => p.playerKey === player.playerKey),
+      opponent: player.opponent,
+      softSchedule: false,
+    }),
+  )
+
   const week11Rows = bye.affectedUserPlayers.map((player) => ({
     week: bye.targetWeek,
     playerKey: player.playerKey,
@@ -255,7 +299,7 @@ export async function mockSchedule(): Promise<ScheduleResponse> {
   return delay({
     weeks: [dump.scheduleMatrix.week, bye.targetWeek],
     myPlayers: [...myPlayers, ...week11Rows],
-    byeOverlapWeeks: [bye.targetWeek],
+    byeOverlapWeeks: bye.affectedUserPlayers.length ? [bye.targetWeek] : [],
     buyLowTargets: [],
     scheduleMatrix: dump.scheduleMatrix,
     byeLookahead: bye,

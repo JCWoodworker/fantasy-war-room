@@ -1,37 +1,61 @@
 import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
+
+export const MANAGED_TEAMS = [
+  {
+    id: 'grok_bowers' as const,
+    teamName: 'Grok Bowers',
+    ownerName: 'Corey',
+    shortLabel: 'Corey',
+  },
+  {
+    id: 'two_pint_conversion' as const,
+    teamName: 'Two-Pint conversion',
+    ownerName: 'Amanda',
+    shortLabel: 'Amanda',
+  },
+]
+
+export type ManagedTeamId = (typeof MANAGED_TEAMS)[number]['id']
 
 interface WarRoomUiState {
+  activeTeamId: ManagedTeamId
+  setActiveTeamId: (teamId: ManagedTeamId) => void
   selectedSystemFilters: string[]
   simulatedClaims: string[]
-  benchOverrides: Record<string, boolean>
   toggleSystemFilter: (system: string) => void
   simulateClaim: (playerKey: string) => void
   clearSimulatedClaims: () => void
-  toggleBenchOverride: (playerKey: string) => void
 }
 
-export const useWarRoomStore = create<WarRoomUiState>((set) => ({
-  selectedSystemFilters: [],
-  simulatedClaims: [],
-  benchOverrides: {},
-  toggleSystemFilter: (system) =>
-    set((state) => ({
-      selectedSystemFilters: state.selectedSystemFilters.includes(system)
-        ? state.selectedSystemFilters.filter((s) => s !== system)
-        : [...state.selectedSystemFilters, system],
-    })),
-  simulateClaim: (playerKey) =>
-    set((state) => ({
-      simulatedClaims: state.simulatedClaims.includes(playerKey)
-        ? state.simulatedClaims
-        : [...state.simulatedClaims, playerKey],
-    })),
-  clearSimulatedClaims: () => set({ simulatedClaims: [] }),
-  toggleBenchOverride: (playerKey) =>
-    set((state) => ({
-      benchOverrides: {
-        ...state.benchOverrides,
-        [playerKey]: !state.benchOverrides[playerKey],
-      },
-    })),
-}))
+export const useWarRoomStore = create<WarRoomUiState>()(
+  persist(
+    (set) => ({
+      activeTeamId: 'grok_bowers',
+      setActiveTeamId: (teamId) => set({ activeTeamId: teamId }),
+      selectedSystemFilters: [],
+      simulatedClaims: [],
+      toggleSystemFilter: (system) =>
+        set((state) => ({
+          selectedSystemFilters: state.selectedSystemFilters.includes(system)
+            ? state.selectedSystemFilters.filter((s) => s !== system)
+            : [...state.selectedSystemFilters, system],
+        })),
+      simulateClaim: (playerKey) =>
+        set((state) => ({
+          simulatedClaims: state.simulatedClaims.includes(playerKey)
+            ? state.simulatedClaims
+            : [...state.simulatedClaims, playerKey],
+        })),
+      clearSimulatedClaims: () => set({ simulatedClaims: [] }),
+    }),
+    {
+      name: 'grok-warroom-ui',
+      partialize: (state) => ({ activeTeamId: state.activeTeamId }),
+    },
+  ),
+)
+
+export function getManagedTeam(teamId: ManagedTeamId) {
+  return MANAGED_TEAMS.find((t) => t.id === teamId) ?? MANAGED_TEAMS[0]
+}

@@ -9,8 +9,8 @@ import {
   CardHeader,
   CardTitle,
 } from '#/components/ui/card'
-import { useWaiversQuery } from '#/hooks/use-fantasy-queries'
-import { useWarRoomStore } from '#/stores/war-room-store'
+import { useMatchupQuery, useWaiversQuery } from '#/hooks/use-fantasy-queries'
+import { getManagedTeam, useWarRoomStore } from '#/stores/war-room-store'
 import { cn } from '#/lib/utils'
 
 function priorityVariant(priority: string) {
@@ -21,6 +21,9 @@ function priorityVariant(priority: string) {
 
 export function WaiverRadar() {
   const { data, isLoading, error } = useWaiversQuery()
+  const matchup = useMatchupQuery()
+  const activeTeamId = useWarRoomStore((s) => s.activeTeamId)
+  const activeTeam = getManagedTeam(activeTeamId)
   const selectedSystemFilters = useWarRoomStore((s) => s.selectedSystemFilters)
   const toggleSystemFilter = useWarRoomStore((s) => s.toggleSystemFilter)
   const simulatedClaims = useWarRoomStore((s) => s.simulatedClaims)
@@ -43,12 +46,20 @@ export function WaiverRadar() {
   const blocks = data.recommendedBlocks.filter((block) =>
     filterActive ? selectedSystemFilters.includes(block.nflTeam) : true,
   )
+  const oppLabel =
+    matchup.data?.opponent.managerName ??
+    matchup.data?.opponent.name ??
+    "this week's opponent"
 
   return (
     <div className="animate-fade-up space-y-5 sm:space-y-6">
       <PageHeader
         title="Waiver Radar"
-        description="Block Marianne's handcuffs, corner Latino Heat's TE stream, and stash system backups."
+        description={
+          activeTeamId === 'two_pint_conversion'
+            ? `${activeTeam.ownerName}: flex Diggs vs Pittman (Q), and watch Ham N Eggers' Nabers/Warren injury traps.`
+            : `Block ${oppLabel}'s handcuffs and stash system backups before Sunday.`
+        }
         actions={
           simulatedClaims.length > 0 ? (
             <Button variant="secondary" size="sm" onClick={clearSimulatedClaims}>
