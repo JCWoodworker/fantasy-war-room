@@ -53,7 +53,7 @@ export function DashboardHome() {
     {
       to: '/schedule' as const,
       title: 'Schedule Matrix',
-      blurb: 'Full Week 1 NFL slate with ownership tags.',
+      blurb: 'Your matchup’s NFL slate — no other managers.',
       icon: CalendarRange,
     },
   ]

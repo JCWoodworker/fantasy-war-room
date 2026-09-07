@@ -10,7 +10,7 @@ import {
   CardTitle,
 } from '#/components/ui/card'
 import { useMatchupQuery, useWaiversQuery } from '#/hooks/use-fantasy-queries'
-import { getManagedTeam, useWarRoomStore } from '#/stores/war-room-store'
+import { useWarRoomStore } from '#/stores/war-room-store'
 import { cn } from '#/lib/utils'
 
 function priorityVariant(priority: string) {
@@ -23,7 +23,6 @@ export function WaiverRadar() {
   const { data, isLoading, error } = useWaiversQuery()
   const matchup = useMatchupQuery()
   const activeTeamId = useWarRoomStore((s) => s.activeTeamId)
-  const activeTeam = getManagedTeam(activeTeamId)
   const selectedSystemFilters = useWarRoomStore((s) => s.selectedSystemFilters)
   const toggleSystemFilter = useWarRoomStore((s) => s.toggleSystemFilter)
   const simulatedClaims = useWarRoomStore((s) => s.simulatedClaims)
@@ -57,7 +56,7 @@ export function WaiverRadar() {
         title="Waiver Radar"
         description={
           activeTeamId === 'two_pint_conversion'
-            ? `${activeTeam.ownerName}: flex Diggs vs Pittman (Q), and watch Ham N Eggers' Nabers/Warren injury traps.`
+            ? `Flex Diggs vs Pittman (Q); watch ${oppLabel}'s Nabers/Warren injury traps.`
             : `Block ${oppLabel}'s handcuffs and stash system backups before Sunday.`
         }
         actions={

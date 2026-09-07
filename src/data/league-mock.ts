@@ -1,5 +1,6 @@
 import leagueDump from '#/data/mock-league-week1.json'
 import type { ManagedTeamId } from '#/stores/war-room-store'
+import { MANAGED_TEAMS } from '#/stores/war-room-store'
 import type {
   HandcuffSuggestion,
   LeverageFlag,
@@ -9,12 +10,15 @@ import type {
   Player,
   PositionalDifferential,
   RosterResponse,
+  ScheduleMatrix,
   ScheduleResponse,
   StandingsResponse,
   WaiversResponse,
 } from '#/types/yahoo'
 
 const dump = leagueDump as LeagueDump
+
+const MANAGED_IDS = new Set(MANAGED_TEAMS.map((t) => t.id))
 
 function delay<T>(value: T, ms = 180): Promise<T> {
   return new Promise((resolve) => setTimeout(() => resolve(value), ms))
@@ -40,6 +44,15 @@ function getMatchupBundle(teamId: ManagedTeamId): MatchupBundle {
     throw new Error(`No matchup mock for team ${teamId}`)
   }
   return bundle
+}
+
+/** Session scope: active manager + their weekly opponent only. */
+function matchupParticipantIds(teamId: ManagedTeamId): Set<string> {
+  const matchup = getMatchupBundle(teamId)
+  return new Set([
+    matchup.userTeam.managerId,
+    matchup.opponentTeam.managerId,
+  ])
 }
 
 function sumProjected(players: Player[]): number {
@@ -92,7 +105,6 @@ function leverageForTeam(teamId: ManagedTeamId): LeverageFlag[] {
     }
   }
 
-  // Amanda: MNF pass-catcher stack (schedule flag for DEN@KC is scoped to James)
   if (teamId === 'two_pint_conversion') {
     const waddle = matchup.userTeam.starters.find(
       (p) => p.playerKey === 'jaylen-waddle',
@@ -112,8 +124,6 @@ function leverageForTeam(teamId: ManagedTeamId): LeverageFlag[] {
 
   for (const game of dump.scheduleMatrix.games) {
     if (!game.leverageFlag?.active) continue
-    // Shared NFL slate can list both managed teams in one game — only surface
-    // leverage written for the active manager's matchup.
     if (game.leverageFlag.forManagerId !== teamId) continue
     flags.push({
       type: game.leverageFlag.type,
@@ -129,6 +139,40 @@ function leverageForTeam(teamId: ManagedTeamId): LeverageFlag[] {
     seen.add(f.message)
     return true
   })
+}
+
+/**
+ * Strip every other managed team (and unrelated managers) out of the slate so
+ * James and Amanda never see each other's roster tags or leverage copy.
+ */
+function scheduleMatrixForTeam(teamId: ManagedTeamId): ScheduleMatrix {
+  const allowed = matchupParticipantIds(teamId)
+
+  const games = dump.scheduleMatrix.games
+    .map((game) => {
+      const fantasyRelevance = game.fantasyRelevance.filter((p) =>
+        allowed.has(p.managerId),
+      )
+      const leverageForActive =
+        game.leverageFlag?.active && game.leverageFlag.forManagerId === teamId
+          ? game.leverageFlag
+          : undefined
+
+      return {
+        ...game,
+        fantasyRelevance,
+        leverageFlag: leverageForActive,
+      }
+    })
+    .filter(
+      (game) =>
+        game.fantasyRelevance.length > 0 || Boolean(game.leverageFlag?.active),
+    )
+
+  return {
+    week: dump.scheduleMatrix.week,
+    games,
+  }
 }
 
 export async function mockHealth() {
@@ -192,36 +236,26 @@ export async function mockRoster(teamId: ManagedTeamId): Promise<RosterResponse>
 export async function mockWaivers(
   teamId: ManagedTeamId,
 ): Promise<WaiversResponse> {
-  const blocks =
-    dump.waiversByTeam[teamId]?.recommendedBlocks ??
-    dump.waiversByTeam.grok_bowers?.recommendedBlocks ??
-    []
+  const teamWaivers = dump.waiversByTeam[teamId]
+  if (!teamWaivers) {
+    throw new Error(`No waiver mock for team ${teamId}`)
+  }
+  const blocks = teamWaivers.recommendedBlocks
+  const matchup = getMatchupBundle(teamId)
+  const oppId = matchup.opponentTeam.managerId
 
   const handcuffBlocks: HandcuffSuggestion[] = blocks.map((block) => ({
     injuredPlayer: {
       playerKey: `context-${block.playerKey}`,
-      name:
-        teamId === 'two_pint_conversion'
-          ? 'Ham N Eggers injury watch'
-          : block.nflTeam === 'SF'
-            ? 'Christian McCaffrey'
-            : block.nflTeam === 'ARI'
-              ? 'Jeremiyah Love'
-              : block.nflTeam === 'GB'
-                ? 'Josh Jacobs'
-                : 'Opponent injury',
+      name: `${teamName(oppId)} injury watch`,
       position: block.position,
       selectedPosition: block.position,
       nflTeam: block.nflTeam,
       projectedPoints: 0,
       injuryStatus: block.nflTeam === 'GB' ? 'CEL' : 'Q',
     },
-    injuredOnTeamKey:
-      teamId === 'two_pint_conversion' ? 'ham_n_eggers' : 'marianne_team',
-    injuredOnTeamName:
-      teamId === 'two_pint_conversion'
-        ? teamName('ham_n_eggers')
-        : teamName('marianne_team'),
+    injuredOnTeamKey: oppId,
+    injuredOnTeamName: teamName(oppId),
     backup: {
       playerKey: block.playerKey,
       name: block.targetPlayer,
@@ -256,8 +290,10 @@ export async function mockSchedule(
   teamId: ManagedTeamId,
 ): Promise<ScheduleResponse> {
   const matchup = getMatchupBundle(teamId)
-  const bye =
-    dump.byeLookaheadByTeam[teamId] ?? dump.byeLookaheadByTeam.grok_bowers
+  const bye = dump.byeLookaheadByTeam[teamId]
+  if (!bye) {
+    throw new Error(`No bye lookahead mock for team ${teamId}`)
+  }
 
   const myPlayers = [...matchup.userTeam.starters, ...matchup.userTeam.bench].map(
     (player) => ({
@@ -285,12 +321,13 @@ export async function mockSchedule(
     myPlayers: [...myPlayers, ...week11Rows],
     byeOverlapWeeks: bye.affectedUserPlayers.length ? [bye.targetWeek] : [],
     buyLowTargets: [],
-    scheduleMatrix: dump.scheduleMatrix,
+    scheduleMatrix: scheduleMatrixForTeam(teamId),
     byeLookahead: bye,
   })
 }
 
 export async function mockStandings(): Promise<StandingsResponse> {
+  // League standings are public; both managers appear as peers (not as session data).
   return delay({
     standings: dump.standings.map((row) => ({
       rank: row.rank,
@@ -305,4 +342,17 @@ export async function mockStandings(): Promise<StandingsResponse> {
       projectedRecord: row.projectedRecord,
     })),
   })
+}
+
+/** Dev/test helper: assert no other managed-team ids leak into a scoped payload. */
+export function assertNoManagedCrossTalk(
+  teamId: ManagedTeamId,
+  managerIds: Iterable<string>,
+) {
+  const allowed = matchupParticipantIds(teamId)
+  for (const id of managerIds) {
+    if (MANAGED_IDS.has(id) && !allowed.has(id)) {
+      throw new Error(`Managed-team leak: saw ${id} while viewing ${teamId}`)
+    }
+  }
 }

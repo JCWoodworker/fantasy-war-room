@@ -12,7 +12,7 @@ import {
   useMatchupQuery,
   useScheduleQuery,
 } from '#/hooks/use-fantasy-queries'
-import { useWarRoomStore } from '#/stores/war-room-store'
+import { getManagedTeam, useWarRoomStore } from '#/stores/war-room-store'
 import { cn } from '#/lib/utils'
 
 function formatKickoff(iso: string): string {
@@ -33,7 +33,10 @@ export function TradeForecaster() {
   const { data, isLoading, error } = useScheduleQuery(3)
   const matchup = useMatchupQuery()
   const activeTeamId = useWarRoomStore((s) => s.activeTeamId)
+  const activeTeam = getManagedTeam(activeTeamId)
   const opponentTeamKey = matchup.data?.opponent.teamKey
+  const oppLabel =
+    matchup.data?.opponent.managerName ?? matchup.data?.opponent.name ?? 'opponent'
 
   if (isLoading) {
     return <p className="text-[var(--muted)]">Building schedule matrix…</p>
@@ -53,7 +56,7 @@ export function TradeForecaster() {
     <div className="animate-fade-up space-y-5 sm:space-y-6">
       <PageHeader
         title="Schedule Matrix"
-        description={`Week ${matrix?.week ?? 1} slate for your matchup — your players highlighted, opponent in fuchsia, leverage only for the team you’re viewing.`}
+        description={`Week ${matrix?.week ?? 1} for ${activeTeam.ownerName} vs ${oppLabel} — only your matchup’s players and leverage.`}
       />
 
       {bye ? (
@@ -79,17 +82,10 @@ export function TradeForecaster() {
       ) : null}
 
       <div className="space-y-3 sm:space-y-4">
-        {matrix?.games.map((game) => {
-          const leverageForActive =
-            game.leverageFlag?.active &&
-            game.leverageFlag.forManagerId === activeTeamId
-              ? game.leverageFlag
-              : null
-
-          return (
+        {matrix?.games.map((game) => (
           <Card
             key={game.id}
-            className={cn(leverageForActive && 'border-fuchsia-500/35')}
+            className={cn(game.leverageFlag?.active && 'border-fuchsia-500/35')}
           >
             <CardHeader className="pb-3">
               <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
@@ -101,13 +97,13 @@ export function TradeForecaster() {
                   {formatKickoff(game.kickoffET)}
                 </span>
               </div>
-              {leverageForActive ? (
+              {game.leverageFlag?.active ? (
                 <CardDescription className="text-pretty text-fuchsia-200/90">
                   <Badge variant="leverage" className="mb-2 mr-0 sm:mb-0 sm:mr-2">
-                    {leverageForActive.type.replaceAll('_', ' ')}
+                    {game.leverageFlag.type.replaceAll('_', ' ')}
                   </Badge>
                   <span className="mt-1 block sm:mt-0 sm:inline">
-                    {leverageForActive.description}
+                    {game.leverageFlag.description}
                   </span>
                 </CardDescription>
               ) : null}
@@ -135,7 +131,8 @@ export function TradeForecaster() {
                           <InjuryBadge status={player.status} />
                         </div>
                         <p className="truncate text-[11px] text-[var(--muted)]">
-                          {player.team} {player.position} · {player.managerId}
+                          {player.team} {player.position} ·{' '}
+                          {isUser ? 'you' : isOpp ? 'opponent' : player.managerId}
                         </p>
                       </div>
                     </div>
@@ -144,8 +141,7 @@ export function TradeForecaster() {
               </div>
             </CardContent>
           </Card>
-          )
-        })}
+        ))}
       </div>
     </div>
   )

@@ -32,7 +32,17 @@ export const useWarRoomStore = create<WarRoomUiState>()(
   persist(
     (set) => ({
       activeTeamId: 'grok_bowers',
-      setActiveTeamId: (teamId) => set({ activeTeamId: teamId }),
+      setActiveTeamId: (teamId) =>
+        set((state) =>
+          state.activeTeamId === teamId
+            ? state
+            : {
+                activeTeamId: teamId,
+                // Session UI must not carry claims/filters across identities
+                selectedSystemFilters: [],
+                simulatedClaims: [],
+              },
+        ),
       selectedSystemFilters: [],
       simulatedClaims: [],
       toggleSystemFilter: (system) =>
