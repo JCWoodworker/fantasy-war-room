@@ -92,22 +92,8 @@ function leverageForTeam(teamId: ManagedTeamId): LeverageFlag[] {
     }
   }
 
-  // Amanda: Dak vs opponent Cowboys stack pieces
+  // Amanda: MNF pass-catcher stack (schedule flag for DEN@KC is scoped to James)
   if (teamId === 'two_pint_conversion') {
-    const dak = matchup.userTeam.starters.find((p) => p.playerKey === 'dak-prescott')
-    const lamb = matchup.opponentTeam.starters.find(
-      (p) => p.playerKey === 'ceedee-lamb',
-    )
-    if (dak && lamb) {
-      flags.push({
-        type: 'SNF_STACK_CORRELATION',
-        severity: 'high',
-        message:
-          'Dak Prescott faces Ham N Eggers’ CeeDee/Aubrey/Nabers exposure. Non-Lamb Dak production surges you while capping B-Nice.',
-        myPlayerKey: dak.playerKey,
-        relatedPlayerKey: lamb.playerKey,
-      })
-    }
     const waddle = matchup.userTeam.starters.find(
       (p) => p.playerKey === 'jaylen-waddle',
     )
@@ -126,11 +112,9 @@ function leverageForTeam(teamId: ManagedTeamId): LeverageFlag[] {
 
   for (const game of dump.scheduleMatrix.games) {
     if (!game.leverageFlag?.active) continue
-    const involvesUser = game.fantasyRelevance.some((p) => p.managerId === teamId)
-    const involvesOpp = game.fantasyRelevance.some(
-      (p) => p.managerId === matchup.opponentTeam.managerId,
-    )
-    if (!involvesUser && !involvesOpp) continue
+    // Shared NFL slate can list both managed teams in one game — only surface
+    // leverage written for the active manager's matchup.
+    if (game.leverageFlag.forManagerId !== teamId) continue
     flags.push({
       type: game.leverageFlag.type,
       severity:

@@ -112,6 +112,8 @@ export interface ScheduleMatrixGame {
     active: boolean
     type: string
     description: string
+    /** When set, only show this flag in that managed team's matchup view */
+    forManagerId?: string
   }
 }
 

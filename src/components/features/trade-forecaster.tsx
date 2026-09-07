@@ -53,7 +53,7 @@ export function TradeForecaster() {
     <div className="animate-fade-up space-y-5 sm:space-y-6">
       <PageHeader
         title="Schedule Matrix"
-        description={`Week ${matrix?.week ?? 1} NFL slate mapped to league managers — injury tags, CEL alerts, and leverage.`}
+        description={`Week ${matrix?.week ?? 1} slate for your matchup — your players highlighted, opponent in fuchsia, leverage only for the team you’re viewing.`}
       />
 
       {bye ? (
@@ -79,12 +79,17 @@ export function TradeForecaster() {
       ) : null}
 
       <div className="space-y-3 sm:space-y-4">
-        {matrix?.games.map((game) => (
+        {matrix?.games.map((game) => {
+          const leverageForActive =
+            game.leverageFlag?.active &&
+            game.leverageFlag.forManagerId === activeTeamId
+              ? game.leverageFlag
+              : null
+
+          return (
           <Card
             key={game.id}
-            className={cn(
-              game.leverageFlag?.active && 'border-fuchsia-500/35',
-            )}
+            className={cn(leverageForActive && 'border-fuchsia-500/35')}
           >
             <CardHeader className="pb-3">
               <div className="flex flex-col gap-1 sm:flex-row sm:items-center sm:justify-between sm:gap-3">
@@ -96,13 +101,13 @@ export function TradeForecaster() {
                   {formatKickoff(game.kickoffET)}
                 </span>
               </div>
-              {game.leverageFlag?.active ? (
+              {leverageForActive ? (
                 <CardDescription className="text-pretty text-fuchsia-200/90">
                   <Badge variant="leverage" className="mb-2 mr-0 sm:mb-0 sm:mr-2">
-                    {game.leverageFlag.type.replaceAll('_', ' ')}
+                    {leverageForActive.type.replaceAll('_', ' ')}
                   </Badge>
                   <span className="mt-1 block sm:mt-0 sm:inline">
-                    {game.leverageFlag.description}
+                    {leverageForActive.description}
                   </span>
                 </CardDescription>
               ) : null}
@@ -139,7 +144,8 @@ export function TradeForecaster() {
               </div>
             </CardContent>
           </Card>
-        ))}
+          )
+        })}
       </div>
     </div>
   )

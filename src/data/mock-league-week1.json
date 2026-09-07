@@ -290,7 +290,8 @@
         "leverageFlag": {
           "active": true,
           "type": "EARLY_OPPONENT_STRIKE",
-          "description": "Opponent starts TreVeyon Henderson (Q). A limited snap count on Wednesday sets an immediate deficit for marianne's Team."
+          "description": "Opponent starts TreVeyon Henderson (Q). A limited snap count on Wednesday sets an immediate deficit for marianne's Team.",
+          "forManagerId": "grok_bowers"
         }
       },
       {
@@ -399,7 +400,8 @@
         "leverageFlag": {
           "active": true,
           "type": "MATCHUP_PIVOT_POINT",
-          "description": "Marianne's RB1 Christian McCaffrey carries a Q tag into Thursday night. Any workload reduction tilts the projected matchup heavily toward Grok Bowers."
+          "description": "Marianne's RB1 Christian McCaffrey carries a Q tag into Thursday night. Any workload reduction tilts the projected matchup heavily toward Grok Bowers.",
+          "forManagerId": "grok_bowers"
         }
       },
       {
@@ -500,7 +502,8 @@
         "leverageFlag": {
           "active": true,
           "type": "OPPONENT_STACK_EXPOSURE",
-          "description": "Marianne starts the Josh Allen + DJ Moore Bills stack against Houston. Nico Collins operates as your primary counter-punch."
+          "description": "Marianne starts the Josh Allen + DJ Moore Bills stack against Houston. Nico Collins operates as your primary counter-punch.",
+          "forManagerId": "grok_bowers"
         }
       },
       {
@@ -1209,7 +1212,8 @@
         "leverageFlag": {
           "active": true,
           "type": "DIRECT_MATCHUP_CORRELATION",
-          "description": "Ladd McConkey produces points directly against Marianne's flex starter Jeremiyah Love (Q) in the same afternoon window."
+          "description": "Ladd McConkey produces points directly against Marianne's flex starter Jeremiyah Love (Q) in the same afternoon window.",
+          "forManagerId": "grok_bowers"
         }
       },
       {
@@ -1318,7 +1322,8 @@
         "leverageFlag": {
           "active": true,
           "type": "OPPONENT_ANCHOR_EXPOSURE",
-          "description": "Justin Jefferson serves as Marianne's primary WR anchor. MarShawn Lloyd's volume against this defense provides valuable baseline data."
+          "description": "Justin Jefferson serves as Marianne's primary WR anchor. MarShawn Lloyd's volume against this defense provides valuable baseline data.",
+          "forManagerId": "grok_bowers"
         }
       },
       {
@@ -1411,7 +1416,8 @@
         "leverageFlag": {
           "active": true,
           "type": "DEFENSIVE_FLOOR_ANCHOR",
-          "description": "Your Philadelphia Eagles D/ST faces rookie/offensive line pressure opportunities at home against Washington."
+          "description": "Your Philadelphia Eagles D/ST faces rookie/offensive line pressure opportunities at home against Washington.",
+          "forManagerId": "grok_bowers"
         }
       },
       {
@@ -1504,7 +1510,8 @@
         "leverageFlag": {
           "active": true,
           "type": "SNF_STACK_CORRELATION",
-          "description": "Two-Pint starts Dak against Ham N Eggers' Lamb/Aubrey/Nabers stack. Non-Lamb Dak production surges Amanda while capping B-Nice."
+          "description": "Two-Pint starts Dak against Ham N Eggers' Lamb/Aubrey/Nabers stack. Non-Lamb Dak production surges Amanda while capping B-Nice.",
+          "forManagerId": "two_pint_conversion"
         }
       },
       {
@@ -1621,7 +1628,8 @@
         "leverageFlag": {
           "active": true,
           "type": "NEGATIVE_CORRELATION",
-          "description": "Grok Bowers QB (Bo Nix) directly attacks marianne_team DEF (Denver Broncos). Every Denver scoring play strips fantasy points directly from Marianne."
+          "description": "Grok Bowers QB (Bo Nix) directly attacks marianne_team DEF (Denver Broncos). Every Denver scoring play strips fantasy points directly from Marianne.",
+          "forManagerId": "grok_bowers"
         }
       }
     ]
