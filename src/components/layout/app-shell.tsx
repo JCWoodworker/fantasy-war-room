@@ -89,7 +89,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
               <p className="mb-2 text-[10px] uppercase tracking-[0.18em] text-[var(--muted)]">
                 Viewing as
               </p>
-              <TeamSwitcher />
+              <TeamSwitcher stacked />
             </div>
             <div className="flex items-center justify-between text-xs text-[var(--muted)]">
               <span>Data mode</span>
@@ -144,7 +144,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           <p className="mb-2 text-[10px] uppercase tracking-[0.18em] text-[var(--muted)]">
             Viewing as
           </p>
-          <TeamSwitcher compact />
+          <TeamSwitcher stacked />
         </div>
       </aside>
 
@@ -191,7 +191,7 @@ export function AppShell({ children }: { children: React.ReactNode }) {
           </Badge>
         </header>
         <div className="border-b border-[var(--border)] bg-black px-3 py-2 md:hidden">
-          <TeamSwitcher compact />
+          <TeamSwitcher />
         </div>
 
         <main

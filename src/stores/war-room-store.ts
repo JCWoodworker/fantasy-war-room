@@ -5,8 +5,8 @@ export const MANAGED_TEAMS = [
   {
     id: 'grok_bowers' as const,
     teamName: 'Grok Bowers',
-    ownerName: 'Corey',
-    shortLabel: 'Corey',
+    ownerName: 'James',
+    shortLabel: 'James',
   },
   {
     id: 'two_pint_conversion' as const,

@@ -1,7 +1,13 @@
 import { MANAGED_TEAMS, useWarRoomStore } from '#/stores/war-room-store'
 import { cn } from '#/lib/utils'
 
-export function TeamSwitcher({ compact = false }: { compact?: boolean }) {
+type TeamSwitcherProps = {
+  /** Vertical stack for narrow sidebar columns */
+  stacked?: boolean
+  className?: string
+}
+
+export function TeamSwitcher({ stacked = false, className }: TeamSwitcherProps) {
   const activeTeamId = useWarRoomStore((s) => s.activeTeamId)
   const setActiveTeamId = useWarRoomStore((s) => s.setActiveTeamId)
 
@@ -10,8 +16,11 @@ export function TeamSwitcher({ compact = false }: { compact?: boolean }) {
       role="group"
       aria-label="Select managed team"
       className={cn(
-        'inline-flex max-w-full items-center gap-0.5 rounded-lg border border-[var(--border)] bg-black p-0.5',
-        compact ? 'w-full sm:w-auto' : '',
+        'rounded-lg border border-[var(--border)] bg-black p-0.5',
+        stacked
+          ? 'flex w-full flex-col gap-0.5'
+          : 'inline-flex w-full max-w-full items-center gap-0.5 sm:w-auto',
+        className,
       )}
     >
       {MANAGED_TEAMS.map((team) => {
@@ -21,21 +30,21 @@ export function TeamSwitcher({ compact = false }: { compact?: boolean }) {
             key={team.id}
             type="button"
             onClick={() => setActiveTeamId(team.id)}
+            title={`${team.ownerName} · ${team.teamName}`}
             className={cn(
-              'min-h-9 flex-1 rounded-md px-2.5 text-xs font-semibold transition-colors sm:flex-none sm:px-3 sm:text-sm',
+              'min-h-9 rounded-md px-2.5 text-left text-xs font-semibold transition-colors sm:text-sm',
+              stacked ? 'w-full' : 'min-w-0 flex-1 truncate sm:flex-none',
               active
                 ? 'bg-[var(--accent-soft)] text-[var(--accent)]'
                 : 'text-[var(--muted)] hover:text-[var(--fg)]',
             )}
           >
-            <span className="sm:hidden">{team.shortLabel}</span>
-            <span className="hidden sm:inline">
-              {team.shortLabel}
-              <span className="font-normal text-[var(--muted)]">
-                {' '}
-                · {team.teamName}
+            <span className="block truncate">{team.shortLabel}</span>
+            {stacked ? (
+              <span className="block truncate text-[10px] font-normal text-[var(--muted)]">
+                {team.teamName}
               </span>
-            </span>
+            ) : null}
           </button>
         )
       })}
