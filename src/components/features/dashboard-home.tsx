@@ -19,19 +19,19 @@ const tiles = [
   {
     to: '/matchup',
     title: 'Matchup Exploiter',
-    blurb: 'Positional edges and leverage flags for this week.',
+    blurb: 'Week 1 vs Marianne — Nix/Harvey vs Broncos DEF leverage.',
     icon: Crosshair,
   },
   {
     to: '/waivers',
     title: 'Waiver Radar',
-    blurb: 'Handcuff blocks from opponent injuries.',
+    blurb: 'Guerendo, Benson, Conklin blocks before Sunday.',
     icon: Radar,
   },
   {
     to: '/schedule',
     title: 'Trade Forecaster',
-    blurb: 'Bye crunches and soft-schedule buy-lows.',
+    blurb: 'Full Week 1 NFL matrix with league ownership tags.',
     icon: CalendarRange,
   },
 ] as const
@@ -51,22 +51,25 @@ export function DashboardHome() {
       <section className="relative overflow-hidden rounded-2xl border border-[var(--border)] bg-[var(--panel)] px-6 py-10 lg:px-10">
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(circle_at_80%_20%,rgba(196,245,66,0.18),transparent_40%)]" />
         <p className="text-xs uppercase tracking-[0.25em] text-[var(--muted)]">
-          The Grok Bowers War Room
+          {health.data?.leagueName ?? 'Fantasy Football League 2026'}
         </p>
         <h2 className="font-display mt-3 max-w-xl text-4xl leading-none text-[var(--fg)] lg:text-5xl">
-          High-upside management, zero mercy.
+          Grok Bowers · Week {matchup.data?.week ?? 1}
         </h2>
         <p className="mt-4 max-w-lg text-[var(--muted)]">
-          Situational leverage over static projections — matchups, handcuffs, and
-          schedule edges in one board.
+          Corey vs Marianne — real league mock until Yahoo API access clears.
         </p>
         <div className="mt-6 flex flex-wrap gap-2">
           <Badge variant="secondary">Mode: {health.data?.mode ?? 'mock'}</Badge>
           {matchup.data ? (
             <Badge variant={edge != null && edge >= 0 ? 'positive' : 'negative'}>
-              Week {matchup.data.week} edge{' '}
-              {edge != null ? `${edge >= 0 ? '+' : ''}${edge.toFixed(1)}` : '—'}
+              Edge{' '}
+              {edge != null ? `${edge >= 0 ? '+' : ''}${edge.toFixed(2)}` : '—'}{' '}
+              vs {matchup.data.opponent.name}
             </Badge>
+          ) : null}
+          {matchup.data?.leverageFlags[0] ? (
+            <Badge variant="leverage">Leverage live</Badge>
           ) : null}
         </div>
       </section>
@@ -87,22 +90,35 @@ export function DashboardHome() {
 
       <Card>
         <CardHeader>
-          <CardTitle>Standings snapshot</CardTitle>
-          <CardDescription>League table from Nest / mock feed</CardDescription>
+          <CardTitle>Projected standings</CardTitle>
+          <CardDescription>
+            Preseason Yahoo projections · 0-0 until kickoff
+          </CardDescription>
         </CardHeader>
         <CardContent className="space-y-2">
           {standings.data?.standings.map((row) => (
             <div
               key={row.teamKey}
-              className="flex items-center justify-between rounded-lg border border-[var(--border)] px-3 py-2 text-sm"
+              className={`flex items-center justify-between rounded-lg border border-[var(--border)] px-3 py-2 text-sm ${
+                row.teamKey === 'grok_bowers' ? 'bg-[var(--accent-soft)]' : ''
+              }`}
             >
               <div className="flex items-center gap-3">
                 <span className="w-6 text-[var(--muted)]">#{row.rank}</span>
-                <span className="font-medium">{row.name}</span>
+                <div>
+                  <span className="font-medium">{row.name}</span>
+                  {row.ownerName ? (
+                    <span className="ml-2 text-xs text-[var(--muted)]">
+                      {row.ownerName}
+                    </span>
+                  ) : null}
+                </div>
               </div>
               <span className="tabular-nums text-[var(--muted)]">
-                {row.wins}-{row.losses}
-                {row.ties ? `-${row.ties}` : ''} · {row.pointsFor.toFixed(1)} PF
+                {row.projectedRecord ?? `${row.wins}-${row.losses}`}
+                {row.projectedSeasonPoints != null
+                  ? ` · ${row.projectedSeasonPoints.toFixed(1)} proj`
+                  : ''}
               </span>
             </div>
           ))}

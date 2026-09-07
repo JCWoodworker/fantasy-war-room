@@ -1,4 +1,4 @@
-import { PlayerRow } from '#/components/features/player-row'
+import { InjuryBadge, PlayerRow } from '#/components/features/player-row'
 import { Badge } from '#/components/ui/badge'
 import { Button } from '#/components/ui/button'
 import {
@@ -19,6 +19,12 @@ import {
 import { useWaiversQuery } from '#/hooks/use-fantasy-queries'
 import { useWarRoomStore } from '#/stores/war-room-store'
 import { cn } from '#/lib/utils'
+
+function priorityVariant(priority: string) {
+  if (priority === 'HIGH') return 'priorityHigh' as const
+  if (priority === 'MEDIUM') return 'priorityMed' as const
+  return 'priorityLow' as const
+}
 
 export function WaiverRadar() {
   const { data, isLoading, error } = useWaiversQuery()
@@ -41,10 +47,8 @@ export function WaiverRadar() {
 
   const systems = data.targetedSystems
   const filterActive = selectedSystemFilters.length > 0
-  const pool = [...data.freeAgents, ...data.waiverPlayers].filter((player) =>
-    filterActive
-      ? selectedSystemFilters.includes(player.nflTeam)
-      : true,
+  const blocks = data.recommendedBlocks.filter((block) =>
+    filterActive ? selectedSystemFilters.includes(block.nflTeam) : true,
   )
 
   return (
@@ -53,8 +57,8 @@ export function WaiverRadar() {
         <div>
           <h2 className="font-display text-3xl tracking-tight">Waiver Radar</h2>
           <p className="mt-1 max-w-2xl text-[var(--muted)]">
-            Stash handcuffs and block opponents — filter by offensive system, not
-            just projected points.
+            Block Marianne&apos;s handcuffs, corner Latino Heat&apos;s TE stream,
+            and stash system backups — not pure projected-points sorting.
           </p>
         </div>
         {simulatedClaims.length > 0 ? (
@@ -68,7 +72,7 @@ export function WaiverRadar() {
       <Card>
         <CardHeader>
           <CardTitle>Targeted systems</CardTitle>
-          <CardDescription>High-value backfields to monitor</CardDescription>
+          <CardDescription>NFL offenses tied to this week&apos;s blocks</CardDescription>
         </CardHeader>
         <CardContent className="flex flex-wrap gap-2">
           {systems.map((system) => {
@@ -92,37 +96,64 @@ export function WaiverRadar() {
         </CardContent>
       </Card>
 
+      <Card className="border-amber-500/30">
+        <CardHeader>
+          <CardTitle>Recommended blocks</CardTitle>
+          <CardDescription>
+            Injury hedges + Latino Heat TE crisis stashes
+          </CardDescription>
+        </CardHeader>
+        <CardContent className="space-y-3">
+          {blocks.map((block) => (
+            <div
+              key={block.playerKey}
+              className="rounded-lg border border-[var(--border)] bg-[var(--panel-elevated)] p-4"
+            >
+              <div className="flex flex-wrap items-center gap-2">
+                <Badge variant={priorityVariant(block.priority)}>
+                  {block.priority}
+                </Badge>
+                <p className="font-medium">
+                  {block.targetPlayer}{' '}
+                  <span className="text-[var(--muted)]">
+                    · {block.nflTeam} {block.position}
+                  </span>
+                </p>
+              </div>
+              <p className="mt-2 text-sm text-[var(--muted)]">{block.rationale}</p>
+              <Button
+                size="sm"
+                className="mt-3"
+                onClick={() => simulateClaim(block.playerKey)}
+              >
+                {simulatedClaims.includes(block.playerKey)
+                  ? 'Sim claimed'
+                  : 'Simulate claim'}
+              </Button>
+            </div>
+          ))}
+        </CardContent>
+      </Card>
+
       {data.handcuffBlocks.length > 0 ? (
-        <Card className="border-amber-500/30">
+        <Card>
           <CardHeader>
-            <CardTitle>Handcuff / block opportunities</CardTitle>
-            <CardDescription>
-              Opponent injuries crossed with available backups
-            </CardDescription>
+            <CardTitle>Injury → backup map</CardTitle>
           </CardHeader>
           <CardContent className="space-y-3">
             {data.handcuffBlocks.map((block) => (
               <div
                 key={`${block.injuredPlayer.playerKey}-${block.backup.playerKey}`}
-                className="rounded-lg border border-[var(--border)] bg-[var(--panel-elevated)] p-3"
+                className="rounded-lg border border-[var(--border)] p-3"
               >
-                <div className="flex flex-wrap items-center gap-2">
-                  <Badge variant="injuryD">{block.injuredPlayer.injuryStatus}</Badge>
-                  <p className="text-sm font-medium">{block.reason}</p>
+                <div className="mb-2 flex items-center gap-2 text-sm">
+                  <InjuryBadge status={block.injuredPlayer.injuryStatus} />
+                  <span className="text-[var(--muted)]">{block.injuredOnTeamName}</span>
                 </div>
-                <div className="mt-2 grid gap-2 md:grid-cols-2">
+                <div className="grid gap-2 md:grid-cols-2">
                   <PlayerRow player={block.injuredPlayer} />
                   <PlayerRow player={block.backup} />
                 </div>
-                <Button
-                  size="sm"
-                  className="mt-2"
-                  onClick={() => simulateClaim(block.backup.playerKey)}
-                >
-                  {simulatedClaims.includes(block.backup.playerKey)
-                    ? 'Sim claimed'
-                    : 'Simulate claim'}
-                </Button>
               </div>
             ))}
           </CardContent>
@@ -132,11 +163,6 @@ export function WaiverRadar() {
       <Card>
         <CardHeader>
           <CardTitle>Available pool</CardTitle>
-          <CardDescription>
-            {filterActive
-              ? `Filtered to ${selectedSystemFilters.join(', ')}`
-              : 'Free agents + waivers'}
-          </CardDescription>
         </CardHeader>
         <CardContent>
           <Table>
@@ -145,35 +171,33 @@ export function WaiverRadar() {
                 <TableHead>Player</TableHead>
                 <TableHead>Pos</TableHead>
                 <TableHead>System</TableHead>
-                <TableHead>Proj</TableHead>
-                <TableHead>Owned</TableHead>
+                <TableHead>Priority</TableHead>
                 <TableHead />
               </TableRow>
             </TableHeader>
             <TableBody>
-              {pool.map((player) => (
+              {blocks.map((block) => (
                 <TableRow
-                  key={player.playerKey}
+                  key={block.playerKey}
                   className={
-                    simulatedClaims.includes(player.playerKey)
+                    simulatedClaims.includes(block.playerKey)
                       ? 'bg-[var(--accent-soft)]'
                       : undefined
                   }
                 >
-                  <TableCell className="font-medium">{player.name}</TableCell>
-                  <TableCell>{player.position}</TableCell>
-                  <TableCell>{player.nflTeam}</TableCell>
-                  <TableCell className="tabular-nums">
-                    {player.projectedPoints.toFixed(1)}
-                  </TableCell>
-                  <TableCell className="tabular-nums">
-                    {player.percentOwned ?? '—'}%
+                  <TableCell className="font-medium">{block.targetPlayer}</TableCell>
+                  <TableCell>{block.position}</TableCell>
+                  <TableCell>{block.nflTeam}</TableCell>
+                  <TableCell>
+                    <Badge variant={priorityVariant(block.priority)}>
+                      {block.priority}
+                    </Badge>
                   </TableCell>
                   <TableCell>
                     <Button
                       size="sm"
                       variant="secondary"
-                      onClick={() => simulateClaim(player.playerKey)}
+                      onClick={() => simulateClaim(block.playerKey)}
                     >
                       Claim
                     </Button>

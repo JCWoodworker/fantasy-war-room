@@ -1,10 +1,11 @@
 import {
+  mockHealth,
   mockMatchup,
   mockRoster,
   mockSchedule,
   mockStandings,
   mockWaivers,
-} from '#/data/mock-yahoo'
+} from '#/data/league-mock'
 import type {
   HealthResponse,
   MatchupResponse,
@@ -31,20 +32,13 @@ async function fetchJson<T>(path: string): Promise<T> {
 }
 
 export async function getHealth(): Promise<HealthResponse> {
-  if (useMockYahoo()) {
-    return {
-      ok: true,
-      mode: 'mock',
-      leagueId: null,
-      mcpConnected: false,
-    }
-  }
+  if (useMockYahoo()) return mockHealth()
   return fetchJson<HealthResponse>('/health')
 }
 
 export async function getMatchup(week?: number): Promise<MatchupResponse> {
   if (useMockYahoo()) {
-    const data = mockMatchup()
+    const data = await mockMatchup()
     if (week) data.week = week
     return data
   }
@@ -57,7 +51,7 @@ export async function getRoster(
   week?: number,
 ): Promise<RosterResponse> {
   if (useMockYahoo()) {
-    const data = mockRoster()
+    const data = await mockRoster()
     if (week) data.week = week
     return data
   }
@@ -73,7 +67,18 @@ export async function getWaivers(options?: {
   systems?: string[]
 }): Promise<WaiversResponse> {
   if (useMockYahoo()) {
-    return mockWaivers()
+    const data = await mockWaivers()
+    if (options?.systems?.length) {
+      const set = new Set(options.systems)
+      return {
+        ...data,
+        freeAgents: data.freeAgents.filter((p) => set.has(p.nflTeam)),
+        recommendedBlocks: data.recommendedBlocks.filter((b) =>
+          set.has(b.nflTeam),
+        ),
+      }
+    }
+    return data
   }
   const params = new URLSearchParams()
   if (options?.position) params.set('position', options.position)
@@ -83,15 +88,11 @@ export async function getWaivers(options?: {
 }
 
 export async function getSchedule(weeksAhead = 3): Promise<ScheduleResponse> {
-  if (useMockYahoo()) {
-    return mockSchedule()
-  }
+  if (useMockYahoo()) return mockSchedule()
   return fetchJson<ScheduleResponse>(`/schedule?weeksAhead=${weeksAhead}`)
 }
 
 export async function getStandings(): Promise<StandingsResponse> {
-  if (useMockYahoo()) {
-    return mockStandings()
-  }
+  if (useMockYahoo()) return mockStandings()
   return fetchJson<StandingsResponse>('/standings')
 }

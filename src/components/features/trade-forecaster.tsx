@@ -1,3 +1,4 @@
+import { InjuryBadge } from '#/components/features/player-row'
 import { Badge } from '#/components/ui/badge'
 import {
   Card,
@@ -6,15 +7,20 @@ import {
   CardHeader,
   CardTitle,
 } from '#/components/ui/card'
-import {
-  Table,
-  TableBody,
-  TableCell,
-  TableHead,
-  TableHeader,
-  TableRow,
-} from '#/components/ui/table'
 import { useScheduleQuery } from '#/hooks/use-fantasy-queries'
+
+function formatKickoff(iso: string): string {
+  try {
+    return new Intl.DateTimeFormat('en-US', {
+      weekday: 'short',
+      hour: 'numeric',
+      minute: '2-digit',
+      timeZoneName: 'short',
+    }).format(new Date(iso))
+  } catch {
+    return iso
+  }
+}
 
 export function TradeForecaster() {
   const { data, isLoading, error } = useScheduleQuery(3)
@@ -30,8 +36,8 @@ export function TradeForecaster() {
     )
   }
 
-  const players = [...new Set(data.myPlayers.map((c) => c.playerName))]
-  const lookaheadWeeks = data.weeks
+  const matrix = data.scheduleMatrix
+  const bye = data.byeLookahead
 
   return (
     <div className="animate-fade-up space-y-6">
@@ -40,124 +46,86 @@ export function TradeForecaster() {
           Schedule & Trade Forecaster
         </h2>
         <p className="mt-1 max-w-2xl text-[var(--muted)]">
-          Three-week lookahead, bye crunches, and buy-low targets on soft
-          schedules.
+          Week {matrix?.week ?? 1} NFL matrix mapped to league managers —
+          injury tags, CEL alerts, and leverage correlations.
         </p>
       </div>
 
-      {data.byeOverlapWeeks.length > 0 ? (
+      {bye ? (
         <Card className="border-red-500/30">
           <CardHeader>
-            <CardTitle>Bye-week crunch alert</CardTitle>
-            <CardDescription>
-              Overlapping byes on your roster — especially Week 11
-            </CardDescription>
+            <CardTitle>Bye-week crunch · Week {bye.targetWeek}</CardTitle>
+            <CardDescription>{bye.notes}</CardDescription>
           </CardHeader>
           <CardContent className="flex flex-wrap gap-2">
-            {data.byeOverlapWeeks.map((week) => (
-              <Badge key={week} variant="injuryO">
-                Week {week} overlap
+            {bye.affectedUserPlayers.map((player) => (
+              <Badge key={player.playerKey} variant="injuryO">
+                {player.name} ({player.position})
               </Badge>
             ))}
           </CardContent>
         </Card>
       ) : null}
 
-      <Card>
-        <CardHeader>
-          <CardTitle>Lookahead matrix</CardTitle>
-          <CardDescription>Weeks {lookaheadWeeks.join(' · ')}</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <Table>
-            <TableHeader>
-              <TableRow>
-                <TableHead>Player</TableHead>
-                {lookaheadWeeks.map((week) => (
-                  <TableHead key={week}>W{week}</TableHead>
-                ))}
-              </TableRow>
-            </TableHeader>
-            <TableBody>
-              {players
-                .filter((name) =>
-                  data.myPlayers.some(
-                    (c) => c.playerName === name && lookaheadWeeks.includes(c.week),
-                  ),
-                )
-                .map((name) => (
-                  <TableRow key={name}>
-                    <TableCell className="font-medium">{name}</TableCell>
-                    {lookaheadWeeks.map((week) => {
-                      const cell = data.myPlayers.find(
-                        (c) => c.playerName === name && c.week === week,
-                      )
-                      if (!cell) {
-                        return <TableCell key={week}>—</TableCell>
-                      }
-                      if (cell.isBye) {
-                        return (
-                          <TableCell key={week}>
-                            <Badge variant="injuryO">BYE</Badge>
-                          </TableCell>
-                        )
-                      }
-                      return (
-                        <TableCell key={week}>
-                          <span
-                            className={
-                              cell.softSchedule
-                                ? 'text-emerald-300'
-                                : 'text-[var(--fg)]'
-                            }
-                          >
-                            {cell.opponent}
-                          </span>
-                          {cell.opponentDefRank ? (
-                            <span className="ml-1 text-xs text-[var(--muted)]">
-                              D{cell.opponentDefRank}
-                            </span>
-                          ) : null}
-                        </TableCell>
-                      )
-                    })}
-                  </TableRow>
-                ))}
-            </TableBody>
-          </Table>
-        </CardContent>
-      </Card>
-
-      <Card>
-        <CardHeader>
-          <CardTitle>Buy-low targets</CardTitle>
-          <CardDescription>
-            Underperforming players with soft DEF ranks ahead
-          </CardDescription>
-        </CardHeader>
-        <CardContent className="space-y-3">
-          {data.buyLowTargets.map((target) => (
-            <div
-              key={target.player.playerKey}
-              className="rounded-lg border border-[var(--border)] bg-[var(--panel-elevated)] p-4"
-            >
+      <div className="space-y-4">
+        {matrix?.games.map((game) => (
+          <Card
+            key={game.id}
+            className={
+              game.leverageFlag?.active ? 'border-fuchsia-500/35' : undefined
+            }
+          >
+            <CardHeader className="pb-3">
               <div className="flex flex-wrap items-center justify-between gap-2">
-                <div>
-                  <p className="font-medium">{target.player.name}</p>
-                  <p className="text-sm text-[var(--muted)]">
-                    On {target.teamName} · {target.player.nflTeam}{' '}
-                    {target.player.position}
-                  </p>
-                </div>
-                <Badge variant="positive">
-                  Soft: W{target.softWeeksAhead.join(', W')}
-                </Badge>
+                <CardTitle className="text-base">
+                  {game.awayTeam} @ {game.homeTeam}
+                </CardTitle>
+                <span className="text-xs text-[var(--muted)]">
+                  {formatKickoff(game.kickoffET)}
+                </span>
               </div>
-              <p className="mt-2 text-sm text-[var(--muted)]">{target.reason}</p>
-            </div>
-          ))}
-        </CardContent>
-      </Card>
+              {game.leverageFlag?.active ? (
+                <CardDescription className="text-fuchsia-200/90">
+                  <Badge variant="leverage" className="mr-2">
+                    {game.leverageFlag.type.replaceAll('_', ' ')}
+                  </Badge>
+                  {game.leverageFlag.description}
+                </CardDescription>
+              ) : null}
+            </CardHeader>
+            <CardContent>
+              <div className="grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+                {game.fantasyRelevance.map((player) => {
+                  const isUser = player.managerId === 'grok_bowers'
+                  const isOpp = player.managerId === 'marianne_team'
+                  return (
+                    <div
+                      key={`${game.id}-${player.playerKey}`}
+                      className={`flex items-center justify-between gap-2 rounded-lg border border-[var(--border)] px-3 py-2 text-sm ${
+                        isUser
+                          ? 'bg-[var(--accent-soft)]'
+                          : isOpp
+                            ? 'bg-fuchsia-500/10'
+                            : 'bg-[var(--panel-elevated)]'
+                      }`}
+                    >
+                      <div className="min-w-0">
+                        <div className="flex items-center gap-2">
+                          <p className="truncate font-medium">{player.name}</p>
+                          <InjuryBadge status={player.status} />
+                        </div>
+                        <p className="text-xs text-[var(--muted)]">
+                          {player.team} {player.position} · {player.managerId}
+                        </p>
+                      </div>
+                    </div>
+                  )
+                })}
+              </div>
+            </CardContent>
+          </Card>
+        ))}
+      </div>
     </div>
   )
 }

@@ -1,0 +1,460 @@
+{
+  "league": {
+    "name": "Fantasy Football League 2026",
+    "totalTeams": 10,
+    "currentWeek": 1,
+    "userTeamId": "grok_bowers",
+    "managers": [
+      { "managerId": "grok_bowers", "teamName": "Grok Bowers", "ownerName": "Corey", "isUser": true },
+      { "managerId": "marianne_team", "teamName": "marianne's Team", "ownerName": "Marianne", "isUser": false },
+      { "managerId": "ham_n_eggers", "teamName": "Ham N Eggers", "ownerName": "B-Nice", "isUser": false },
+      { "managerId": "two_pint_conversion", "teamName": "Two-Pint conversion", "ownerName": "Amanda", "isUser": false },
+      { "managerId": "ernies_charity_team", "teamName": "Ernie's CharityTeam", "ownerName": "Ernest", "isUser": false },
+      { "managerId": "latino_heat", "teamName": "Latino Heat 🔥🔥🔥", "ownerName": "Hendrick", "isUser": false },
+      { "managerId": "michaels_team", "teamName": "Michael's Team", "ownerName": "Michael", "isUser": false },
+      { "managerId": "rooster", "teamName": "Rooster", "ownerName": "Antonio", "isUser": false },
+      { "managerId": "roughing_the_kicker", "teamName": "Roughing the kicker", "ownerName": "Allen", "isUser": false },
+      { "managerId": "freds_fighting_ferrets", "teamName": "Fred's Fighting Ferrets", "ownerName": "C.", "isUser": false }
+    ]
+  },
+  "standings": [
+    { "rank": 1, "managerId": "grok_bowers", "wins": 0, "losses": 0, "ties": 0, "pointsFor": 0.0, "projectedSeasonPoints": 2334.10, "projectedRecord": "14-0-0" },
+    { "rank": 2, "managerId": "ham_n_eggers", "wins": 0, "losses": 0, "ties": 0, "pointsFor": 0.0, "projectedSeasonPoints": 2288.60, "projectedRecord": "9-5-0" },
+    { "rank": 3, "managerId": "two_pint_conversion", "wins": 0, "losses": 0, "ties": 0, "pointsFor": 0.0, "projectedSeasonPoints": 2260.10, "projectedRecord": "6-8-0" },
+    { "rank": 4, "managerId": "ernies_charity_team", "wins": 0, "losses": 0, "ties": 0, "pointsFor": 0.0, "projectedSeasonPoints": 2254.91, "projectedRecord": "9-5-0" },
+    { "rank": 5, "managerId": "roughing_the_kicker", "wins": 0, "losses": 0, "ties": 0, "pointsFor": 0.0, "projectedSeasonPoints": 2246.76, "projectedRecord": "7-7-0" },
+    { "rank": 6, "managerId": "marianne_team", "wins": 0, "losses": 0, "ties": 0, "pointsFor": 0.0, "projectedSeasonPoints": 2244.28, "projectedRecord": "8-6-0" },
+    { "rank": 7, "managerId": "michaels_team", "wins": 0, "losses": 0, "ties": 0, "pointsFor": 0.0, "projectedSeasonPoints": 2212.21, "projectedRecord": "8-6-0" },
+    { "rank": 8, "managerId": "freds_fighting_ferrets", "wins": 0, "losses": 0, "ties": 0, "pointsFor": 0.0, "projectedSeasonPoints": 2201.32, "projectedRecord": "2-12-0" },
+    { "rank": 9, "managerId": "rooster", "wins": 0, "losses": 0, "ties": 0, "pointsFor": 0.0, "projectedSeasonPoints": 2154.84, "projectedRecord": "4-10-0" },
+    { "rank": 10, "managerId": "latino_heat", "wins": 0, "losses": 0, "ties": 0, "pointsFor": 0.0, "projectedSeasonPoints": 2151.63, "projectedRecord": "3-11-0" }
+  ],
+  "matchup": {
+    "week": 1,
+    "userTeam": {
+      "managerId": "grok_bowers",
+      "teamName": "Grok Bowers",
+      "projectedTotal": 140.03,
+      "actualTotal": 0.00,
+      "starters": [
+        { "playerKey": "bo-nix", "name": "Bo Nix", "position": "QB", "selectedPosition": "QB", "nflTeam": "DEN", "opponent": "@KC", "gameTime": "Mon 8:15 pm", "projectedPoints": 21.89, "injuryStatus": null },
+        { "playerKey": "bijan-robinson", "name": "Bijan Robinson", "position": "RB", "selectedPosition": "RB", "nflTeam": "ATL", "opponent": "@PIT", "gameTime": "Sun 1:00 pm", "projectedPoints": 20.88, "injuryStatus": null },
+        { "playerKey": "bucky-irving", "name": "Bucky Irving", "position": "RB", "selectedPosition": "RB", "nflTeam": "TB", "opponent": "@CIN", "gameTime": "Sun 1:00 pm", "projectedPoints": 12.34, "injuryStatus": null },
+        { "playerKey": "nico-collins", "name": "Nico Collins", "position": "WR", "selectedPosition": "WR", "nflTeam": "HOU", "opponent": "vs BUF", "gameTime": "Sun 1:00 pm", "projectedPoints": 15.54, "injuryStatus": null },
+        { "playerKey": "tee-higgins", "name": "Tee Higgins", "position": "WR", "selectedPosition": "WR", "nflTeam": "CIN", "opponent": "vs TB", "gameTime": "Sun 1:00 pm", "projectedPoints": 14.02, "injuryStatus": "Q" },
+        { "playerKey": "brock-bowers", "name": "Brock Bowers", "position": "TE", "selectedPosition": "TE", "nflTeam": "LV", "opponent": "vs MIA", "gameTime": "Sun 4:25 pm", "projectedPoints": 14.10, "injuryStatus": null },
+        { "playerKey": "ladd-mcconkey", "name": "Ladd McConkey", "position": "WR", "selectedPosition": "W/R/T", "nflTeam": "LAC", "opponent": "vs ARI", "gameTime": "Sun 4:25 pm", "projectedPoints": 13.05, "injuryStatus": null },
+        { "playerKey": "dk-metcalf", "name": "DK Metcalf", "position": "WR", "selectedPosition": "W/R/T", "nflTeam": "PIT", "opponent": "vs ATL", "gameTime": "Sun 1:00 pm", "projectedPoints": 12.50, "injuryStatus": null },
+        { "playerKey": "jake-bates", "name": "Jake Bates", "position": "K", "selectedPosition": "K", "nflTeam": "DET", "opponent": "vs NO", "gameTime": "Sun 1:00 pm", "projectedPoints": 8.13, "injuryStatus": null },
+        { "playerKey": "eagles-def", "name": "Philadelphia Eagles", "position": "DEF", "selectedPosition": "DEF", "nflTeam": "PHI", "opponent": "vs WAS", "gameTime": "Sun 4:25 pm", "projectedPoints": 7.48, "injuryStatus": null }
+      ],
+      "bench": [
+        { "playerKey": "trevor-lawrence", "name": "Trevor Lawrence", "position": "QB", "selectedPosition": "BN", "nflTeam": "JAX", "opponent": "vs CLE", "gameTime": "Sun 1:00 pm", "projectedPoints": 18.40, "injuryStatus": null },
+        { "playerKey": "luther-burden-iii", "name": "Luther Burden III", "position": "WR", "selectedPosition": "BN", "nflTeam": "CHI", "opponent": "@CAR", "gameTime": "Sun 1:00 pm", "projectedPoints": 12.60, "injuryStatus": "Q" },
+        { "playerKey": "marvin-harrison-jr", "name": "Marvin Harrison Jr.", "position": "WR", "selectedPosition": "BN", "nflTeam": "ARI", "opponent": "@LAC", "gameTime": "Sun 4:25 pm", "projectedPoints": 11.80, "injuryStatus": null },
+        { "playerKey": "marshawn-lloyd", "name": "MarShawn Lloyd", "position": "RB", "selectedPosition": "BN", "nflTeam": "GB", "opponent": "@MIN", "gameTime": "Sun 4:25 pm", "projectedPoints": 11.50, "injuryStatus": null },
+        { "playerKey": "rj-harvey", "name": "RJ Harvey", "position": "RB", "selectedPosition": "BN", "nflTeam": "DEN", "opponent": "@KC", "gameTime": "Mon 8:15 pm", "projectedPoints": 9.20, "injuryStatus": null },
+        { "playerKey": "vikings-def", "name": "Minnesota Vikings", "position": "DEF", "selectedPosition": "BN", "nflTeam": "MIN", "opponent": "vs GB", "gameTime": "Sun 4:25 pm", "projectedPoints": 7.15, "injuryStatus": null }
+      ]
+    },
+    "opponentTeam": {
+      "managerId": "marianne_team",
+      "teamName": "marianne's Team",
+      "projectedTotal": 129.76,
+      "actualTotal": 0.00,
+      "starters": [
+        { "playerKey": "josh-allen", "name": "Josh Allen", "position": "QB", "selectedPosition": "QB", "nflTeam": "BUF", "opponent": "@HOU", "gameTime": "Sun 1:00 pm", "projectedPoints": 23.48, "injuryStatus": null },
+        { "playerKey": "christian-mccaffrey", "name": "Christian McCaffrey", "position": "RB", "selectedPosition": "RB", "nflTeam": "SF", "opponent": "@LAR", "gameTime": "Thu 8:35 pm", "projectedPoints": 18.11, "injuryStatus": "Q" },
+        { "playerKey": "travis-etienne-jr", "name": "Travis Etienne Jr.", "position": "RB", "selectedPosition": "RB", "nflTeam": "NO", "opponent": "@DET", "gameTime": "Sun 1:00 pm", "projectedPoints": 12.87, "injuryStatus": null },
+        { "playerKey": "justin-jefferson", "name": "Justin Jefferson", "position": "WR", "selectedPosition": "WR", "nflTeam": "MIN", "opponent": "vs GB", "gameTime": "Sun 4:25 pm", "projectedPoints": 17.01, "injuryStatus": null },
+        { "playerKey": "dj-moore", "name": "DJ Moore", "position": "WR", "selectedPosition": "WR", "nflTeam": "BUF", "opponent": "@HOU", "gameTime": "Sun 1:00 pm", "projectedPoints": 11.11, "injuryStatus": null },
+        { "playerKey": "travis-kelce", "name": "Travis Kelce", "position": "TE", "selectedPosition": "TE", "nflTeam": "KC", "opponent": "vs DEN", "gameTime": "Mon 8:15 pm", "projectedPoints": 9.55, "injuryStatus": null },
+        { "playerKey": "jeremiyah-love", "name": "Jeremiyah Love", "position": "RB", "selectedPosition": "W/R/T", "nflTeam": "ARI", "opponent": "@LAC", "gameTime": "Sun 4:25 pm", "projectedPoints": 12.89, "injuryStatus": "Q" },
+        { "playerKey": "treveyon-henderson", "name": "TreVeyon Henderson", "position": "RB", "selectedPosition": "W/R/T", "nflTeam": "NE", "opponent": "@SEA", "gameTime": "Wed 8:20 pm", "projectedPoints": 9.68, "injuryStatus": "Q" },
+        { "playerKey": "tyler-loop", "name": "Tyler Loop", "position": "K", "selectedPosition": "K", "nflTeam": "BAL", "opponent": "@IND", "gameTime": "Sun 1:00 pm", "projectedPoints": 7.86, "injuryStatus": null },
+        { "playerKey": "broncos-def", "name": "Denver Broncos", "position": "DEF", "selectedPosition": "DEF", "nflTeam": "DEN", "opponent": "@KC", "gameTime": "Mon 8:15 pm", "projectedPoints": 7.20, "injuryStatus": null }
+      ],
+      "bench": [
+        { "playerKey": "dalton-kincaid", "name": "Dalton Kincaid", "position": "TE", "selectedPosition": "BN", "nflTeam": "BUF", "opponent": "@HOU", "gameTime": "Sun 1:00 pm", "projectedPoints": 8.90, "injuryStatus": null },
+        { "playerKey": "brian-thomas-jr", "name": "Brian Thomas Jr.", "position": "WR", "selectedPosition": "BN", "nflTeam": "JAX", "opponent": "vs CLE", "gameTime": "Sun 1:00 pm", "projectedPoints": 10.40, "injuryStatus": null },
+        { "playerKey": "michael-wilson", "name": "Michael Wilson", "position": "WR", "selectedPosition": "BN", "nflTeam": "ARI", "opponent": "@LAC", "gameTime": "Sun 4:25 pm", "projectedPoints": 9.10, "injuryStatus": null },
+        { "playerKey": "sam-darnold", "name": "Sam Darnold", "position": "QB", "selectedPosition": "BN", "nflTeam": "SEA", "opponent": "vs NE", "gameTime": "Wed 8:20 pm", "projectedPoints": 14.50, "injuryStatus": null },
+        { "playerKey": "romeo-doubs", "name": "Romeo Doubs", "position": "WR", "selectedPosition": "BN", "nflTeam": "NE", "opponent": "@SEA", "gameTime": "Wed 8:20 pm", "projectedPoints": 8.20, "injuryStatus": null },
+        { "playerKey": "jonah-coleman", "name": "Jonah Coleman", "position": "RB", "selectedPosition": "BN", "nflTeam": "DEN", "opponent": "@KC", "gameTime": "Mon 8:15 pm", "projectedPoints": 6.80, "injuryStatus": null }
+      ]
+    }
+  },
+  "waivers": {
+    "recommendedBlocks": [
+      {
+        "targetPlayer": "Isaac Guerendo",
+        "playerKey": "isaac-guerendo",
+        "position": "RB",
+        "nflTeam": "SF",
+        "rationale": "High-leverage handcuff to Christian McCaffrey (Q) on TNF. Prevents Marianne from plugging SF backup volume.",
+        "priority": "HIGH"
+      },
+      {
+        "targetPlayer": "Trey Benson",
+        "playerKey": "trey-benson",
+        "position": "RB",
+        "nflTeam": "ARI",
+        "rationale": "Direct hedge against Jeremiyah Love (Q) in Arizona backfield.",
+        "priority": "MEDIUM"
+      },
+      {
+        "targetPlayer": "Tyler Conklin",
+        "playerKey": "tyler-conklin",
+        "position": "TE",
+        "nflTeam": "NYJ",
+        "rationale": "Latino Heat has zero tight ends on roster. Stash to corner the streaming market or force trade.",
+        "priority": "MEDIUM"
+      },
+      {
+        "targetPlayer": "Chris Brooks",
+        "playerKey": "chris-brooks",
+        "position": "RB",
+        "nflTeam": "GB",
+        "rationale": "Secondary stash behind MarShawn Lloyd with Josh Jacobs on CEL.",
+        "priority": "LOW"
+      }
+    ]
+  },
+  "byeLookahead": {
+    "targetWeek": 11,
+    "userByeCount": 1,
+    "affectedUserPlayers": [
+      { "playerKey": "bijan-robinson", "name": "Bijan Robinson", "position": "RB" },
+      { "playerKey": "marshawn-lloyd", "name": "MarShawn Lloyd", "position": "RB" }
+    ],
+    "notes": "Minimal bye-week attrition across initial rounds. Week 6 (Tee Higgins, Jake Bates, Vikings DEF) and Week 10 (Bucky Irving, Bo Nix, RJ Harvey, Eagles DEF) represent your other clustered bye windows."
+  },
+  "scheduleMatrix": {
+    "week": 1,
+    "games": [
+      {
+        "id": "NE_SEA_20260909",
+        "kickoffET": "2026-09-09T20:20:00-04:00",
+        "awayTeam": "NE",
+        "homeTeam": "SEA",
+        "fantasyRelevance": [
+          { "playerKey": "treveyon-henderson", "name": "TreVeyon Henderson", "managerId": "marianne_team", "status": "Q", "team": "NE", "position": "RB" },
+          { "playerKey": "aj-brown", "name": "A.J. Brown", "managerId": "ernies_charity_team", "status": null, "team": "NE", "position": "WR" },
+          { "playerKey": "drake-maye", "name": "Drake Maye", "managerId": "roughing_the_kicker", "status": null, "team": "NE", "position": "QB" },
+          { "playerKey": "rhamondre-stevenson", "name": "Rhamondre Stevenson", "managerId": "rooster", "status": null, "team": "NE", "position": "RB" },
+          { "playerKey": "hunter-henry", "name": "Hunter Henry", "managerId": "two_pint_conversion", "status": null, "team": "NE", "position": "TE" },
+          { "playerKey": "romeo-doubs", "name": "Romeo Doubs", "managerId": "marianne_team", "status": null, "team": "NE", "position": "WR" },
+          { "playerKey": "patriots-def", "name": "Patriots DEF", "managerId": "rooster", "status": null, "team": "NE", "position": "DEF" },
+          { "playerKey": "jaxon-smith-njigba", "name": "Jaxon Smith-Njigba", "managerId": "rooster", "status": null, "team": "SEA", "position": "WR" },
+          { "playerKey": "jadarian-price", "name": "Jadarian Price", "managerId": "ernies_charity_team", "status": null, "team": "SEA", "position": "RB" },
+          { "playerKey": "sam-darnold", "name": "Sam Darnold", "managerId": "marianne_team", "status": null, "team": "SEA", "position": "QB" },
+          { "playerKey": "rashid-shaheed", "name": "Rashid Shaheed", "managerId": "rooster", "status": null, "team": "SEA", "position": "WR" },
+          { "playerKey": "jason-myers", "name": "Jason Myers", "managerId": "two_pint_conversion", "status": null, "team": "SEA", "position": "K" },
+          { "playerKey": "seahawks-def", "name": "Seahawks DEF", "managerId": "two_pint_conversion", "status": null, "team": "SEA", "position": "DEF" }
+        ],
+        "leverageFlag": {
+          "active": true,
+          "type": "EARLY_OPPONENT_STRIKE",
+          "description": "Opponent starts TreVeyon Henderson (Q). A limited snap count on Wednesday sets an immediate deficit for marianne's Team."
+        }
+      },
+      {
+        "id": "SF_LAR_20260910",
+        "kickoffET": "2026-09-10T20:35:00-04:00",
+        "awayTeam": "SF",
+        "homeTeam": "LAR",
+        "fantasyRelevance": [
+          { "playerKey": "christian-mccaffrey", "name": "Christian McCaffrey", "managerId": "marianne_team", "status": "Q", "team": "SF", "position": "RB" },
+          { "playerKey": "deebo-samuel", "name": "Deebo Samuel Sr.", "managerId": "two_pint_conversion", "status": null, "team": "SF", "position": "WR" },
+          { "playerKey": "george-kittle", "name": "George Kittle", "managerId": "freds_fighting_ferrets", "status": "Q", "team": "SF", "position": "TE" },
+          { "playerKey": "mike-evans", "name": "Mike Evans", "managerId": "freds_fighting_ferrets", "status": "Q", "team": "SF", "position": "WR" },
+          { "playerKey": "brock-purdy", "name": "Brock Purdy", "managerId": "ernies_charity_team", "status": null, "team": "SF", "position": "QB" },
+          { "playerKey": "kyren-williams", "name": "Kyren Williams", "managerId": "ham_n_eggers", "status": null, "team": "LAR", "position": "RB" },
+          { "playerKey": "puka-nacua", "name": "Puka Nacua", "managerId": "michaels_team", "status": "Q", "team": "LAR", "position": "WR" },
+          { "playerKey": "matthew-stafford", "name": "Matthew Stafford", "managerId": "freds_fighting_ferrets", "status": null, "team": "LAR", "position": "QB" },
+          { "playerKey": "blake-corum", "name": "Blake Corum", "managerId": "latino_heat", "status": null, "team": "LAR", "position": "RB" },
+          { "playerKey": "davante-adams", "name": "Davante Adams", "managerId": "latino_heat", "status": null, "team": "LAR", "position": "WR" },
+          { "playerKey": "harrison-mevis", "name": "Harrison Mevis", "managerId": "roughing_the_kicker", "status": null, "team": "LAR", "position": "K" },
+          { "playerKey": "rams-def", "name": "Rams DEF", "managerId": "freds_fighting_ferrets", "status": null, "team": "LAR", "position": "DEF" }
+        ],
+        "leverageFlag": {
+          "active": true,
+          "type": "MATCHUP_PIVOT_POINT",
+          "description": "Marianne's RB1 Christian McCaffrey carries a Q tag into Thursday night. Any workload reduction tilts the projected matchup heavily toward Grok Bowers."
+        }
+      },
+      {
+        "id": "BUF_HOU_20260913_1300",
+        "kickoffET": "2026-09-13T13:00:00-04:00",
+        "awayTeam": "BUF",
+        "homeTeam": "HOU",
+        "fantasyRelevance": [
+          { "playerKey": "josh-allen", "name": "Josh Allen", "managerId": "marianne_team", "status": null, "team": "BUF", "position": "QB" },
+          { "playerKey": "james-cook-iii", "name": "James Cook III", "managerId": "two_pint_conversion", "status": null, "team": "BUF", "position": "RB" },
+          { "playerKey": "dj-moore", "name": "DJ Moore", "managerId": "marianne_team", "status": null, "team": "BUF", "position": "WR" },
+          { "playerKey": "khalil-shakir", "name": "Khalil Shakir", "managerId": "roughing_the_kicker", "status": "Q", "team": "BUF", "position": "WR" },
+          { "playerKey": "dalton-kincaid", "name": "Dalton Kincaid", "managerId": "marianne_team", "status": null, "team": "BUF", "position": "TE" },
+          { "playerKey": "nico-collins", "name": "Nico Collins", "managerId": "grok_bowers", "status": null, "team": "HOU", "position": "WR" },
+          { "playerKey": "david-montgomery", "name": "David Montgomery", "managerId": "ham_n_eggers", "status": null, "team": "HOU", "position": "RB" },
+          { "playerKey": "woody-marks", "name": "Woody Marks", "managerId": "ham_n_eggers", "status": null, "team": "HOU", "position": "RB" },
+          { "playerKey": "dalton-schultz", "name": "Dalton Schultz", "managerId": "two_pint_conversion", "status": null, "team": "HOU", "position": "TE" },
+          { "playerKey": "kaimi-fairbairn", "name": "Ka'imi Fairbairn", "managerId": "ernies_charity_team", "status": null, "team": "HOU", "position": "K" },
+          { "playerKey": "texans-def", "name": "Texans DEF", "managerId": "ham_n_eggers", "status": null, "team": "HOU", "position": "DEF" }
+        ],
+        "leverageFlag": {
+          "active": true,
+          "type": "OPPONENT_STACK_EXPOSURE",
+          "description": "Marianne starts the Josh Allen + DJ Moore Bills stack against Houston. Nico Collins operates as your primary counter-punch."
+        }
+      },
+      {
+        "id": "TB_CIN_20260913_1300",
+        "kickoffET": "2026-09-13T13:00:00-04:00",
+        "awayTeam": "TB",
+        "homeTeam": "CIN",
+        "fantasyRelevance": [
+          { "playerKey": "bucky-irving", "name": "Bucky Irving", "managerId": "grok_bowers", "status": null, "team": "TB", "position": "RB" },
+          { "playerKey": "emeka-egbuka", "name": "Emeka Egbuka", "managerId": "latino_heat", "status": "Q", "team": "TB", "position": "WR" },
+          { "playerKey": "chris-godwin-jr", "name": "Chris Godwin Jr.", "managerId": "ernies_charity_team", "status": null, "team": "TB", "position": "WR" },
+          { "playerKey": "kenny-gainwell", "name": "Kenny Gainwell", "managerId": "two_pint_conversion", "status": null, "team": "TB", "position": "RB" },
+          { "playerKey": "baker-mayfield", "name": "Baker Mayfield", "managerId": "two_pint_conversion", "status": null, "team": "TB", "position": "QB" },
+          { "playerKey": "tee-higgins", "name": "Tee Higgins", "managerId": "grok_bowers", "status": "Q", "team": "CIN", "position": "WR" },
+          { "playerKey": "joe-burrow", "name": "Joe Burrow", "managerId": "ham_n_eggers", "status": null, "team": "CIN", "position": "QB" },
+          { "playerKey": "ja-marr-chase", "name": "Ja'Marr Chase", "managerId": "latino_heat", "status": "Q", "team": "CIN", "position": "WR" },
+          { "playerKey": "chase-brown", "name": "Chase Brown", "managerId": "two_pint_conversion", "status": null, "team": "CIN", "position": "RB" },
+          { "playerKey": "evan-mcpherson", "name": "Evan McPherson", "managerId": "freds_fighting_ferrets", "status": null, "team": "CIN", "position": "K" }
+        ]
+      },
+      {
+        "id": "NO_DET_20260913_1300",
+        "kickoffET": "2026-09-13T13:00:00-04:00",
+        "awayTeam": "NO",
+        "homeTeam": "DET",
+        "fantasyRelevance": [
+          { "playerKey": "travis-etienne-jr", "name": "Travis Etienne Jr.", "managerId": "marianne_team", "status": null, "team": "NO", "position": "RB" },
+          { "playerKey": "chris-olave", "name": "Chris Olave", "managerId": "michaels_team", "status": null, "team": "NO", "position": "WR" },
+          { "playerKey": "jordyn-tyson", "name": "Jordyn Tyson", "managerId": "latino_heat", "status": "IR", "team": "NO", "position": "WR" },
+          { "playerKey": "jake-bates", "name": "Jake Bates", "managerId": "grok_bowers", "status": null, "team": "DET", "position": "K" },
+          { "playerKey": "amon-ra-st-brown", "name": "Amon-Ra St. Brown", "managerId": "ham_n_eggers", "status": null, "team": "DET", "position": "WR" },
+          { "playerKey": "jahmyr-gibbs", "name": "Jahmyr Gibbs", "managerId": "ernies_charity_team", "status": null, "team": "DET", "position": "RB" },
+          { "playerKey": "jameson-williams", "name": "Jameson Williams", "managerId": "michaels_team", "status": null, "team": "DET", "position": "WR" },
+          { "playerKey": "sam-laporta", "name": "Sam LaPorta", "managerId": "rooster", "status": "Q", "team": "DET", "position": "TE" },
+          { "playerKey": "jared-goff", "name": "Jared Goff", "managerId": "michaels_team", "status": null, "team": "DET", "position": "QB" },
+          { "playerKey": "lions-def", "name": "Lions DEF", "managerId": "roughing_the_kicker", "status": null, "team": "DET", "position": "DEF" }
+        ]
+      },
+      {
+        "id": "CLE_JAX_20260913_1300",
+        "kickoffET": "2026-09-13T13:00:00-04:00",
+        "awayTeam": "CLE",
+        "homeTeam": "JAX",
+        "fantasyRelevance": [
+          { "playerKey": "quinshon-judkins", "name": "Quinshon Judkins", "managerId": "michaels_team", "status": null, "team": "CLE", "position": "RB" },
+          { "playerKey": "kc-concepcion", "name": "KC Concepcion", "managerId": "michaels_team", "status": null, "team": "CLE", "position": "WR" },
+          { "playerKey": "harold-fannin-jr", "name": "Harold Fannin Jr.", "managerId": "roughing_the_kicker", "status": null, "team": "CLE", "position": "TE" },
+          { "playerKey": "trevor-lawrence", "name": "Trevor Lawrence", "managerId": "grok_bowers", "status": null, "team": "JAX", "position": "QB" },
+          { "playerKey": "brian-thomas-jr", "name": "Brian Thomas Jr.", "managerId": "marianne_team", "status": null, "team": "JAX", "position": "WR" },
+          { "playerKey": "bhayshul-tuten", "name": "Bhayshul Tuten", "managerId": "michaels_team", "status": "Q", "team": "JAX", "position": "RB" },
+          { "playerKey": "chris-rodriguez-jr", "name": "Chris Rodriguez Jr.", "managerId": "ernies_charity_team", "status": null, "team": "JAX", "position": "RB" },
+          { "playerKey": "jakobi-meyers", "name": "Jakobi Meyers", "managerId": "freds_fighting_ferrets", "status": "Q", "team": "JAX", "position": "WR" },
+          { "playerKey": "parker-washington", "name": "Parker Washington", "managerId": "roughing_the_kicker", "status": null, "team": "JAX", "position": "WR" },
+          { "playerKey": "cam-little", "name": "Cam Little", "managerId": "latino_heat", "status": null, "team": "JAX", "position": "K" },
+          { "playerKey": "jaguars-def", "name": "Jaguars DEF", "managerId": "latino_heat", "status": null, "team": "JAX", "position": "DEF" }
+        ]
+      },
+      {
+        "id": "BAL_IND_20260913_1300",
+        "kickoffET": "2026-09-13T13:00:00-04:00",
+        "awayTeam": "BAL",
+        "homeTeam": "IND",
+        "fantasyRelevance": [
+          { "playerKey": "lamar-jackson", "name": "Lamar Jackson", "managerId": "freds_fighting_ferrets", "status": null, "team": "BAL", "position": "QB" },
+          { "playerKey": "derrick-henry", "name": "Derrick Henry", "managerId": "rooster", "status": null, "team": "BAL", "position": "RB" },
+          { "playerKey": "zay-flowers", "name": "Zay Flowers", "managerId": "freds_fighting_ferrets", "status": "Q", "team": "BAL", "position": "WR" },
+          { "playerKey": "mark-andrews", "name": "Mark Andrews", "managerId": "rooster", "status": null, "team": "BAL", "position": "TE" },
+          { "playerKey": "tyler-loop", "name": "Tyler Loop", "managerId": "marianne_team", "status": null, "team": "BAL", "position": "K" },
+          { "playerKey": "ravens-def", "name": "Ravens DEF", "managerId": "rooster", "status": null, "team": "BAL", "position": "DEF" },
+          { "playerKey": "jonathan-taylor", "name": "Jonathan Taylor", "managerId": "roughing_the_kicker", "status": null, "team": "IND", "position": "RB" },
+          { "playerKey": "tyler-warren", "name": "Tyler Warren", "managerId": "ham_n_eggers", "status": "Q", "team": "IND", "position": "TE" },
+          { "playerKey": "alec-pierce", "name": "Alec Pierce", "managerId": "michaels_team", "status": null, "team": "IND", "position": "WR" },
+          { "playerKey": "josh-downs", "name": "Josh Downs", "managerId": "freds_fighting_ferrets", "status": "Q", "team": "IND", "position": "WR" }
+        ]
+      },
+      {
+        "id": "CHI_CAR_20260913_1300",
+        "kickoffET": "2026-09-13T13:00:00-04:00",
+        "awayTeam": "CHI",
+        "homeTeam": "CAR",
+        "fantasyRelevance": [
+          { "playerKey": "luther-burden-iii", "name": "Luther Burden III", "managerId": "grok_bowers", "status": "Q", "team": "CHI", "position": "WR" },
+          { "playerKey": "caleb-williams", "name": "Caleb Williams", "managerId": "latino_heat", "status": null, "team": "CHI", "position": "QB" },
+          { "playerKey": "d-andre-swift", "name": "D'Andre Swift", "managerId": "rooster", "status": "Q", "team": "CHI", "position": "RB" },
+          { "playerKey": "colston-loveland", "name": "Colston Loveland", "managerId": "michaels_team", "status": null, "team": "CHI", "position": "TE" },
+          { "playerKey": "rome-odunze", "name": "Rome Odunze", "managerId": "latino_heat", "status": "Q", "team": "CHI", "position": "WR" },
+          { "playerKey": "jalen-coker", "name": "Jalen Coker", "managerId": "ham_n_eggers", "status": null, "team": "CAR", "position": "WR" },
+          { "playerKey": "jonathon-brooks", "name": "Jonathon Brooks", "managerId": "ham_n_eggers", "status": "Q", "team": "CAR", "position": "RB" },
+          { "playerKey": "chuba-hubbard", "name": "Chuba Hubbard", "managerId": "michaels_team", "status": "Q", "team": "CAR", "position": "RB" },
+          { "playerKey": "tetairoa-mcmillan", "name": "Tetairoa McMillan", "managerId": "freds_fighting_ferrets", "status": null, "team": "CAR", "position": "WR" }
+        ]
+      },
+      {
+        "id": "NYJ_TEN_20260913_1300",
+        "kickoffET": "2026-09-13T13:00:00-04:00",
+        "awayTeam": "NYJ",
+        "homeTeam": "TEN",
+        "fantasyRelevance": [
+          { "playerKey": "breece-hall", "name": "Breece Hall", "managerId": "latino_heat", "status": "Q", "team": "NYJ", "position": "RB" },
+          { "playerKey": "garrett-wilson", "name": "Garrett Wilson", "managerId": "ernies_charity_team", "status": null, "team": "NYJ", "position": "WR" },
+          { "playerKey": "kenyon-sadiq", "name": "Kenyon Sadiq", "managerId": "michaels_team", "status": "Q", "team": "NYJ", "position": "TE" },
+          { "playerKey": "tony-pollard", "name": "Tony Pollard", "managerId": "freds_fighting_ferrets", "status": null, "team": "TEN", "position": "RB" },
+          { "playerKey": "carnell-tate", "name": "Carnell Tate", "managerId": "latino_heat", "status": "Q", "team": "TEN", "position": "WR" },
+          { "playerKey": "wan-dale-robinson", "name": "Wan'Dale Robinson", "managerId": "ham_n_eggers", "status": "Q", "team": "TEN", "position": "WR" }
+        ]
+      },
+      {
+        "id": "ATL_PIT_20260913_1300",
+        "kickoffET": "2026-09-13T13:00:00-04:00",
+        "awayTeam": "ATL",
+        "homeTeam": "PIT",
+        "fantasyRelevance": [
+          { "playerKey": "bijan-robinson", "name": "Bijan Robinson", "managerId": "grok_bowers", "status": null, "team": "ATL", "position": "RB" },
+          { "playerKey": "drake-london", "name": "Drake London", "managerId": "roughing_the_kicker", "status": null, "team": "ATL", "position": "WR" },
+          { "playerKey": "kyle-pitts-sr", "name": "Kyle Pitts Sr.", "managerId": "freds_fighting_ferrets", "status": null, "team": "ATL", "position": "TE" },
+          { "playerKey": "dk-metcalf", "name": "DK Metcalf", "managerId": "grok_bowers", "status": null, "team": "PIT", "position": "WR" },
+          { "playerKey": "rico-dowdle", "name": "Rico Dowdle", "managerId": "two_pint_conversion", "status": null, "team": "PIT", "position": "RB" },
+          { "playerKey": "michael-pittman-jr", "name": "Michael Pittman Jr.", "managerId": "two_pint_conversion", "status": "Q", "team": "PIT", "position": "WR" },
+          { "playerKey": "jaylen-warren", "name": "Jaylen Warren", "managerId": "freds_fighting_ferrets", "status": null, "team": "PIT", "position": "RB" },
+          { "playerKey": "steelers-def", "name": "Steelers DEF", "managerId": "ernies_charity_team", "status": null, "team": "PIT", "position": "DEF" }
+        ]
+      },
+      {
+        "id": "MIA_LV_20260913_1625",
+        "kickoffET": "2026-09-13T16:25:00-04:00",
+        "awayTeam": "MIA",
+        "homeTeam": "LV",
+        "fantasyRelevance": [
+          { "playerKey": "de-von-achane", "name": "De'Von Achane", "managerId": "roughing_the_kicker", "status": null, "team": "MIA", "position": "RB" },
+          { "playerKey": "brock-bowers", "name": "Brock Bowers", "managerId": "grok_bowers", "status": null, "team": "LV", "position": "TE" },
+          { "playerKey": "ashton-jeanty", "name": "Ashton Jeanty", "managerId": "michaels_team", "status": "Q", "team": "LV", "position": "RB" },
+          { "playerKey": "fernando-mendoza", "name": "Fernando Mendoza", "managerId": "michaels_team", "status": null, "team": "LV", "position": "QB" },
+          { "playerKey": "mike-washington-jr", "name": "Mike Washington Jr.", "managerId": "latino_heat", "status": null, "team": "LV", "position": "RB" }
+        ]
+      },
+      {
+        "id": "ARI_LAC_20260913_1625",
+        "kickoffET": "2026-09-13T16:25:00-04:00",
+        "awayTeam": "ARI",
+        "homeTeam": "LAC",
+        "fantasyRelevance": [
+          { "playerKey": "jeremiyah-love", "name": "Jeremiyah Love", "managerId": "marianne_team", "status": "Q", "team": "ARI", "position": "RB" },
+          { "playerKey": "marvin-harrison-jr", "name": "Marvin Harrison Jr.", "managerId": "grok_bowers", "status": null, "team": "ARI", "position": "WR" },
+          { "playerKey": "trey-mcbride", "name": "Trey McBride", "managerId": "two_pint_conversion", "status": null, "team": "ARI", "position": "TE" },
+          { "playerKey": "michael-wilson", "name": "Michael Wilson", "managerId": "marianne_team", "status": null, "team": "ARI", "position": "WR" },
+          { "playerKey": "ladd-mcconkey", "name": "Ladd McConkey", "managerId": "grok_bowers", "status": null, "team": "LAC", "position": "WR" },
+          { "playerKey": "justin-herbert", "name": "Justin Herbert", "managerId": "ernies_charity_team", "status": null, "team": "LAC", "position": "QB" },
+          { "playerKey": "cameron-dicker", "name": "Cameron Dicker", "managerId": "michaels_team", "status": "Q", "team": "LAC", "position": "K" },
+          { "playerKey": "chargers-def", "name": "Chargers DEF", "managerId": "michaels_team", "status": null, "team": "LAC", "position": "DEF" },
+          { "playerKey": "omarion-hampton", "name": "Omarion Hampton", "managerId": "latino_heat", "status": null, "team": "LAC", "position": "RB" },
+          { "playerKey": "quentin-johnston", "name": "Quentin Johnston", "managerId": "rooster", "status": null, "team": "LAC", "position": "WR" }
+        ],
+        "leverageFlag": {
+          "active": true,
+          "type": "DIRECT_MATCHUP_CORRELATION",
+          "description": "Ladd McConkey produces points directly against Marianne's flex starter Jeremiyah Love (Q) in the same afternoon window."
+        }
+      },
+      {
+        "id": "GB_MIN_20260913_1625",
+        "kickoffET": "2026-09-13T16:25:00-04:00",
+        "awayTeam": "GB",
+        "homeTeam": "MIN",
+        "fantasyRelevance": [
+          { "playerKey": "marshawn-lloyd", "name": "MarShawn Lloyd", "managerId": "grok_bowers", "status": null, "team": "GB", "position": "RB" },
+          { "playerKey": "tucker-kraft", "name": "Tucker Kraft", "managerId": "ernies_charity_team", "status": "Q", "team": "GB", "position": "TE" },
+          { "playerKey": "christian-watson", "name": "Christian Watson", "managerId": "roughing_the_kicker", "status": null, "team": "GB", "position": "WR" },
+          { "playerKey": "jayden-reed", "name": "Jayden Reed", "managerId": "roughing_the_kicker", "status": null, "team": "GB", "position": "WR" },
+          { "playerKey": "matthew-golden", "name": "Matthew Golden", "managerId": "ernies_charity_team", "status": null, "team": "GB", "position": "WR" },
+          { "playerKey": "josh-jacobs", "name": "Josh Jacobs", "managerId": "latino_heat", "status": "CEL", "team": "GB", "position": "RB" },
+          { "playerKey": "jordan-love", "name": "Jordan Love", "managerId": "rooster", "status": null, "team": "GB", "position": "QB" },
+          { "playerKey": "justin-jefferson", "name": "Justin Jefferson", "managerId": "marianne_team", "status": null, "team": "MIN", "position": "WR" },
+          { "playerKey": "vikings-def", "name": "Vikings DEF", "managerId": "grok_bowers", "status": null, "team": "MIN", "position": "DEF" },
+          { "playerKey": "jordan-mason", "name": "Jordan Mason", "managerId": "ham_n_eggers", "status": null, "team": "MIN", "position": "RB" },
+          { "playerKey": "jordan-addison", "name": "Jordan Addison", "managerId": "rooster", "status": null, "team": "MIN", "position": "WR" },
+          { "playerKey": "aaron-jones-sr", "name": "Aaron Jones Sr.", "managerId": "rooster", "status": null, "team": "MIN", "position": "RB" }
+        ],
+        "leverageFlag": {
+          "active": true,
+          "type": "OPPONENT_ANCHOR_EXPOSURE",
+          "description": "Justin Jefferson serves as Marianne's primary WR anchor. MarShawn Lloyd's volume against this defense provides valuable baseline data."
+        }
+      },
+      {
+        "id": "WAS_PHI_20260913_1625",
+        "kickoffET": "2026-09-13T16:25:00-04:00",
+        "awayTeam": "WAS",
+        "homeTeam": "PHI",
+        "fantasyRelevance": [
+          { "playerKey": "jayden-daniels", "name": "Jayden Daniels", "managerId": "roughing_the_kicker", "status": null, "team": "WAS", "position": "QB" },
+          { "playerKey": "stefon-diggs", "name": "Stefon Diggs", "managerId": "two_pint_conversion", "status": null, "team": "WAS", "position": "WR" },
+          { "playerKey": "jacory-croskey-merritt", "name": "Jacory Croskey-Merritt", "managerId": "roughing_the_kicker", "status": "Q", "team": "WAS", "position": "RB" },
+          { "playerKey": "terry-mclaurin", "name": "Terry McLaurin", "managerId": "freds_fighting_ferrets", "status": null, "team": "WAS", "position": "WR" },
+          { "playerKey": "eagles-def", "name": "Philadelphia Eagles", "managerId": "grok_bowers", "status": null, "team": "PHI", "position": "DEF" },
+          { "playerKey": "dallas-goedert", "name": "Dallas Goedert", "managerId": "ernies_charity_team", "status": null, "team": "PHI", "position": "TE" },
+          { "playerKey": "jalen-hurts", "name": "Jalen Hurts", "managerId": "rooster", "status": null, "team": "PHI", "position": "QB" },
+          { "playerKey": "devonta-smith", "name": "DeVonta Smith", "managerId": "rooster", "status": null, "team": "PHI", "position": "WR" },
+          { "playerKey": "saquon-barkley", "name": "Saquon Barkley", "managerId": "freds_fighting_ferrets", "status": null, "team": "PHI", "position": "RB" },
+          { "playerKey": "makai-lemon", "name": "Makai Lemon", "managerId": "latino_heat", "status": null, "team": "PHI", "position": "WR" }
+        ],
+        "leverageFlag": {
+          "active": true,
+          "type": "DEFENSIVE_FLOOR_ANCHOR",
+          "description": "Your Philadelphia Eagles D/ST faces rookie/offensive line pressure opportunities at home against Washington."
+        }
+      },
+      {
+        "id": "DAL_NYG_20260913_2020",
+        "kickoffET": "2026-09-13T20:20:00-04:00",
+        "awayTeam": "DAL",
+        "homeTeam": "NYG",
+        "fantasyRelevance": [
+          { "playerKey": "ceedee-lamb", "name": "CeeDee Lamb", "managerId": "ham_n_eggers", "status": null, "team": "DAL", "position": "WR" },
+          { "playerKey": "jake-ferguson", "name": "Jake Ferguson", "managerId": "ham_n_eggers", "status": null, "team": "DAL", "position": "TE" },
+          { "playerKey": "brandon-aubrey", "name": "Brandon Aubrey", "managerId": "ham_n_eggers", "status": null, "team": "DAL", "position": "K" },
+          { "playerKey": "george-pickens", "name": "George Pickens", "managerId": "ernies_charity_team", "status": null, "team": "DAL", "position": "WR" },
+          { "playerKey": "dak-prescott", "name": "Dak Prescott", "managerId": "two_pint_conversion", "status": null, "team": "DAL", "position": "QB" },
+          { "playerKey": "javonte-williams", "name": "Javonte Williams", "managerId": "latino_heat", "status": null, "team": "DAL", "position": "RB" },
+          { "playerKey": "malik-nabers", "name": "Malik Nabers", "managerId": "ham_n_eggers", "status": "Q", "team": "NYG", "position": "WR" },
+          { "playerKey": "jaxson-dart", "name": "Jaxson Dart", "managerId": "michaels_team", "status": null, "team": "NYG", "position": "QB" },
+          { "playerKey": "cam-skattebo", "name": "Cam Skattebo", "managerId": "ernies_charity_team", "status": null, "team": "NYG", "position": "RB" },
+          { "playerKey": "isaiah-likely", "name": "Isaiah Likely", "managerId": "roughing_the_kicker", "status": null, "team": "NYG", "position": "TE" }
+        ]
+      },
+      {
+        "id": "DEN_KC_20260914_2015",
+        "kickoffET": "2026-09-14T20:15:00-04:00",
+        "awayTeam": "DEN",
+        "homeTeam": "KC",
+        "fantasyRelevance": [
+          { "playerKey": "bo-nix", "name": "Bo Nix", "managerId": "grok_bowers", "status": null, "team": "DEN", "position": "QB" },
+          { "playerKey": "rj-harvey", "name": "RJ Harvey", "managerId": "grok_bowers", "status": null, "team": "DEN", "position": "RB" },
+          { "playerKey": "broncos-def", "name": "Denver Broncos", "managerId": "marianne_team", "status": null, "team": "DEN", "position": "DEF" },
+          { "playerKey": "jonah-coleman", "name": "Jonah Coleman", "managerId": "marianne_team", "status": null, "team": "DEN", "position": "RB" },
+          { "playerKey": "jaylen-waddle", "name": "Jaylen Waddle", "managerId": "two_pint_conversion", "status": null, "team": "DEN", "position": "WR" },
+          { "playerKey": "courtland-sutton", "name": "Courtland Sutton", "managerId": "roughing_the_kicker", "status": null, "team": "DEN", "position": "WR" },
+          { "playerKey": "j-k-dobbins", "name": "J.K. Dobbins", "managerId": "ernies_charity_team", "status": null, "team": "DEN", "position": "RB" },
+          { "playerKey": "travis-kelce", "name": "Travis Kelce", "managerId": "marianne_team", "status": null, "team": "KC", "position": "TE" },
+          { "playerKey": "patrick-mahomes", "name": "Patrick Mahomes", "managerId": "ham_n_eggers", "status": "Q", "team": "KC", "position": "QB" },
+          { "playerKey": "rashee-rice", "name": "Rashee Rice", "managerId": "two_pint_conversion", "status": null, "team": "KC", "position": "WR" },
+          { "playerKey": "kenneth-walker-iii", "name": "Kenneth Walker III", "managerId": "freds_fighting_ferrets", "status": null, "team": "KC", "position": "RB" },
+          { "playerKey": "xavier-worthy", "name": "Xavier Worthy", "managerId": "roughing_the_kicker", "status": null, "team": "KC", "position": "WR" },
+          { "playerKey": "harrison-butker", "name": "Harrison Butker", "managerId": "rooster", "status": null, "team": "KC", "position": "K" }
+        ],
+        "leverageFlag": {
+          "active": true,
+          "type": "NEGATIVE_CORRELATION",
+          "description": "Grok Bowers QB (Bo Nix) directly attacks marianne_team DEF (Denver Broncos). Every Denver scoring play strips fantasy points directly from Marianne."
+        }
+      }
+    ]
+  }
+}
